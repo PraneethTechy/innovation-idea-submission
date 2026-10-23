@@ -1,0 +1,221 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/ideacenter/pages/MyIdeasPage.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=093d1749"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+var _s = $RefreshSig$();
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=093d1749"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react;
+import { api } from "/src/ideacenter/api/ideaApi.js?t=1791624950569";
+import { useAsync } from "/src/ideacenter/hooks/useAsync.js";
+import { useSpark } from "/src/ideacenter/hooks/SparkContext.jsx";
+import { useCurrentUser } from "/src/ideacenter/hooks/useCurrentUser.jsx?t=1791624950569";
+import { A } from "/src/ideacenter/hooks/useNav.jsx?t=1791611849021";
+import { Pill, DueBadge, AsyncView } from "/src/ideacenter/components/ui.jsx";
+export default function MyIdeasPage() {
+  _s();
+  const user = useCurrentUser();
+  const { openIdea, version } = useSpark();
+  const state = useAsync(() => api.listIdeas({ scope: "mine" }), [version, user?.id]);
+  const feedback = (i) => {
+    if (i.status === "Rejected") return `Rejected: ${i.reason}`;
+    if (i.status === "Needs info") return "We need more from you. Open to read the question.";
+    return i.stage ? `Next stage: ${i.stage}` : "";
+  };
+  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-pagehead", children: [
+      /* @__PURE__ */ jsxDEV("div", { children: [
+        /* @__PURE__ */ jsxDEV("h1", { children: "My ideas" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+          lineNumber: 40,
+          columnNumber: 14
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { children: "Track what happened to each idea you submitted." }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+          lineNumber: 40,
+          columnNumber: 31
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+        lineNumber: 40,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(A, { to: "/employee/submit", className: "sp-btn", children: "Submit an idea" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+        lineNumber: 41,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+      lineNumber: 39,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(
+      AsyncView,
+      {
+        state,
+        isEmpty: (d) => d.length === 0,
+        empty: /* @__PURE__ */ jsxDEV(Fragment, { children: [
+          "You have not submitted an idea yet.",
+          /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+            lineNumber: 44,
+            columnNumber: 51
+          }, this),
+          /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+            lineNumber: 44,
+            columnNumber: 57
+          }, this),
+          /* @__PURE__ */ jsxDEV(A, { to: "/employee/submit", className: "sp-btn", children: "Submit your first idea" }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+            lineNumber: 44,
+            columnNumber: 63
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+          lineNumber: 44,
+          columnNumber: 14
+        }, this),
+        children: (list) => /* @__PURE__ */ jsxDEV("div", { className: "sp-tablewrap", children: /* @__PURE__ */ jsxDEV("table", { className: "sp-table", children: [
+          /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
+            /* @__PURE__ */ jsxDEV("th", { children: "ID" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+              lineNumber: 48,
+              columnNumber: 26
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Idea" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+              lineNumber: 48,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Status" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+              lineNumber: 48,
+              columnNumber: 50
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Reply" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+              lineNumber: 48,
+              columnNumber: 65
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Reviewer feedback" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+              lineNumber: 48,
+              columnNumber: 79
+            }, this)
+          ] }, void 0, true, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+            lineNumber: 48,
+            columnNumber: 22
+          }, this) }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+            lineNumber: 48,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("tbody", { children: list.map(
+            (i) => /* @__PURE__ */ jsxDEV("tr", { children: [
+              /* @__PURE__ */ jsxDEV("td", { className: "sp-id", children: i.id }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 52,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("button", { className: "sp-linkcell", onClick: () => openIdea(i.id), children: i.title }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 53,
+                columnNumber: 25
+              }, this) }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 53,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV(Pill, { status: i.status }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 54,
+                columnNumber: 25
+              }, this) }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 54,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV(DueBadge, { idea: i }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 55,
+                columnNumber: 25
+              }, this) }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 55,
+                columnNumber: 21
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: feedback(i) }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+                lineNumber: 56,
+                columnNumber: 21
+              }, this)
+            ] }, i.id, true, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+              lineNumber: 51,
+              columnNumber: 15
+            }, this)
+          ) }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+            lineNumber: 49,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+          lineNumber: 47,
+          columnNumber: 13
+        }, this) }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+          lineNumber: 46,
+          columnNumber: 9
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+        lineNumber: 43,
+        columnNumber: 7
+      },
+      this
+    )
+  ] }, void 0, true, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx",
+    lineNumber: 38,
+    columnNumber: 5
+  }, this);
+}
+_s(MyIdeasPage, "Rf8LaYE9iARW8S5AUBqiAYehsC4=", false, function() {
+  return [useCurrentUser, useSpark, useAsync];
+});
+_c = MyIdeasPage;
+var _c;
+$RefreshReg$(_c, "MyIdeasPage");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/MyIdeasPage.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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USxTQUFsRTtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUF3RSxLQUE1RTtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUFxRjtBQUFBLGNBQ3JGLHVCQUFDLFFBQUcsaUNBQUMsUUFBSyxRQUFRUixFQUFFQyxVQUFoQjtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUF1QixLQUEzQjtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUE4QjtBQUFBLGNBQzlCLHVCQUFDLFFBQUcsaUNBQUMsWUFBUyxNQUFNRCxLQUFoQjtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUFrQixLQUF0QjtBQUFBO0FBQUE7QUFBQTtBQUFBLHFCQUF5QjtBQUFBLGNBQ3pCLHVCQUFDLFFBQUlELG1CQUFTQyxDQUFDLEtBQWY7QUFBQTtBQUFBO0FBQUE7QUFBQSxxQkFBaUI7QUFBQSxpQkFMVkEsRUFBRUYsSUFBWDtBQUFBO0FBQUE7QUFBQTtBQUFBLG1CQU1BO0FBQUEsVUFDRCxLQVRIO0FBQUE7QUFBQTtBQUFBO0FBQUEsaUJBVUE7QUFBQSxhQVpGO0FBQUE7QUFBQTtBQUFBO0FBQUEsZUFhQSxLQWRGO0FBQUE7QUFBQTtBQUFBO0FBQUEsZUFlQTtBQUFBO0FBQUEsTUFsQko7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLElBb0JBO0FBQUEsT0F6QkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQTBCQTtBQUVKO0FBQUNQLEdBdEN1QkQsYUFBVztBQUFBLFVBQ3BCTCxnQkFDaUJELFVBQ2hCRCxRQUFRO0FBQUE7QUFBQSxLQUhBTztBQUFXLElBQUFtQjtBQUFBLGFBQUFBLElBQUEiLCJuYW1lcyI6WyJSZWFjdCIsImFwaSIsInVzZUFzeW5jIiwidXNlU3BhcmsiLCJ1c2VDdXJyZW50VXNlciIsIkEiLCJQaWxsIiwiRHVlQmFkZ2UiLCJBc3luY1ZpZXciLCJNeUlkZWFzUGFnZSIsIl9zIiwidXNlciIsIm9wZW5JZGVhIiwidmVyc2lvbiIsInN0YXRlIiwibGlzdElkZWFzIiwic2NvcGUiLCJpZCIsImZlZWRiYWNrIiwiaSIsInN0YXR1cyIsInJlYXNvbiIsInN0YWdlIiwiZCIsImxlbmd0aCIsImxpc3QiLCJtYXAiLCJ0aXRsZSIsIl9jIl0sImlnbm9yZUxpc3QiOltdLCJzb3VyY2VzIjpbIk15SWRlYXNQYWdlLmpzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgYXBpIH0gZnJvbSAnLi4vYXBpL2lkZWFBcGkuanMnO1xuaW1wb3J0IHsgdXNlQXN5bmMgfSBmcm9tICcuLi9ob29rcy91c2VBc3luYy5qcyc7XG5pbXBvcnQgeyB1c2VTcGFyayB9IGZyb20gJy4uL2hvb2tzL1NwYXJrQ29udGV4dC5qc3gnO1xuaW1wb3J0IHsgdXNlQ3VycmVudFVzZXIgfSBmcm9tICcuLi9ob29rcy91c2VDdXJyZW50VXNlci5qc3gnO1xuaW1wb3J0IHsgQSB9IGZyb20gJy4uL2hvb2tzL3VzZU5hdi5qc3gnO1xuaW1wb3J0IHsgUGlsbCwgRHVlQmFkZ2UsIEFzeW5jVmlldyB9IGZyb20gJy4uL2NvbXBvbmVudHMvdWkuanN4JztcblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gTXlJZGVhc1BhZ2UoKSB7XG4gIGNvbnN0IHVzZXIgPSB1c2VDdXJyZW50VXNlcigpO1xuICBjb25zdCB7IG9wZW5JZGVhLCB2ZXJzaW9uIH0gPSB1c2VTcGFyaygpO1xuICBjb25zdCBzdGF0ZSA9IHVzZUFzeW5jKCgpID0+IGFwaS5saXN0SWRlYXMoeyBzY29wZTogJ21pbmUnIH0pLCBbdmVyc2lvbiwgdXNlcj8uaWRdKTtcbiAgY29uc3QgZmVlZGJhY2sgPSAoaSkgPT4ge1xuICAgIGlmIChpLnN0YXR1cyA9PT0gJ1JlamVjdGVkJykgcmV0dXJuIGBSZWplY3RlZDogJHtpLnJlYXNvbn1gO1xuICAgIGlmIChpLnN0YXR1cyA9PT0gJ05lZWRzIGluZm8nKSByZXR1cm4gJ1dlIG5lZWQgbW9yZSBmcm9tIHlvdS4gT3BlbiB0byByZWFkIHRoZSBxdWVzdGlvbi4nO1xuICAgIHJldHVybiBpLnN0YWdlID8gYE5leHQgc3RhZ2U6ICR7aS5zdGFnZX1gIDogJyc7XG4gIH07XG4gIHJldHVybiAoXG4gICAgPD5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3AtcGFnZWhlYWRcIj5cbiAgICAgICAgPGRpdj48aDE+TXkgaWRlYXM8L2gxPjxwPlRyYWNrIHdoYXQgaGFwcGVuZWQgdG8gZWFjaCBpZGVhIHlvdSBzdWJtaXR0ZWQuPC9wPjwvZGl2PlxuICAgICAgICA8QSB0bz1cIi9lbXBsb3llZS9zdWJtaXRcIiBjbGFzc05hbWU9XCJzcC1idG5cIj5TdWJtaXQgYW4gaWRlYTwvQT5cbiAgICAgIDwvZGl2PlxuICAgICAgPEFzeW5jVmlldyBzdGF0ZT17c3RhdGV9IGlzRW1wdHk9eyhkKSA9PiBkLmxlbmd0aCA9PT0gMH1cbiAgICAgICAgZW1wdHk9ezw+WW91IGhhdmUgbm90IHN1Ym1pdHRlZCBhbiBpZGVhIHlldC48YnIgLz48YnIgLz48QSB0bz1cIi9lbXBsb3llZS9zdWJtaXRcIiBjbGFzc05hbWU9XCJzcC1idG5cIj5TdWJtaXQgeW91ciBmaXJzdCBpZGVhPC9BPjwvPn0+XG4gICAgICAgIHsobGlzdCkgPT4gKFxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3AtdGFibGV3cmFwXCI+XG4gICAgICAgICAgICA8dGFibGUgY2xhc3NOYW1lPVwic3AtdGFibGVcIj5cbiAgICAgICAgICAgICAgPHRoZWFkPjx0cj48dGg+SUQ8L3RoPjx0aD5JZGVhPC90aD48dGg+U3RhdHVzPC90aD48dGg+UmVwbHk8L3RoPjx0aD5SZXZpZXdlciBmZWVkYmFjazwvdGg+PC90cj48L3RoZWFkPlxuICAgICAgICAgICAgICA8dGJvZHk+XG4gICAgICAgICAgICAgICAge2xpc3QubWFwKChpKSA9PiAoXG4gICAgICAgICAgICAgICAgICA8dHIga2V5PXtpLmlkfT5cbiAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInNwLWlkXCI+e2kuaWR9PC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPHRkPjxidXR0b24gY2xhc3NOYW1lPVwic3AtbGlua2NlbGxcIiBvbkNsaWNrPXsoKSA9PiBvcGVuSWRlYShpLmlkKX0+e2kudGl0bGV9PC9idXR0b24+PC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPHRkPjxQaWxsIHN0YXR1cz17aS5zdGF0dXN9IC8+PC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPHRkPjxEdWVCYWRnZSBpZGVhPXtpfSAvPjwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDx0ZD57ZmVlZGJhY2soaSl9PC90ZD5cbiAgICAgICAgICAgICAgICAgIDwvdHI+XG4gICAgICAgICAgICAgICAgKSl9XG4gICAgICAgICAgICAgIDwvdGJvZHk+XG4gICAgICAgICAgICA8L3RhYmxlPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICApfVxuICAgICAgPC9Bc3luY1ZpZXc+XG4gICAgPC8+XG4gICk7XG59XG4iXSwiZmlsZSI6IkQ6L0Rvd25sb2Fkcy9TcGFya19wcm90b3R5cGVfcHJvamVjdC9zcGFyay1wcm90b3R5cGUvc3JjL2lkZWFjZW50ZXIvcGFnZXMvTXlJZGVhc1BhZ2UuanN4In0=

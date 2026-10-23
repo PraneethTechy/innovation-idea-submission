@@ -1,0 +1,484 @@
+import subprocess, os
+
+html_path = os.path.abspath('scratch/test_animated_hero.html')
+with open(html_path, 'w', encoding='utf-8') as f:
+    f.write('''<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: #F8F5FE;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .sp-hero-card {
+      position: relative;
+      width: 1120px;
+      min-height: 215px;
+      background: linear-gradient(90deg, #F0E6FD 0%, #EDE4FD 35%, #EDE4FD 65%, #DECDFD 100%);
+      border: 1px solid rgba(216,203,238,0.85);
+      border-radius: 20px;
+      padding: 16px 32px;
+      display: grid;
+      grid-template-columns: 1.25fr 1.55fr 0.8fr;
+      gap: 20px;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 0 8px 24px -4px rgba(107,47,168,0.06);
+    }
+    .sp-hero-bg-waves {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 20px;
+      background:
+        radial-gradient(ellipse 65% 55% at 20% 90%, rgba(196,181,253,0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 85% 85%, rgba(167,139,250,0.25) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 50% 95%, rgba(216,180,254,0.35) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    /* Left Column */
+    .sp-hero-left {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .sp-hero-eyebrow {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      color: #7C3AED;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .sp-hero-title {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #1E1B4B;
+      letter-spacing: -0.025em;
+      margin: 0 0 8px;
+    }
+    .sp-hero-title-highlight {
+      color: #6D28D9;
+      white-space: nowrap;
+    }
+    .sp-hero-sub {
+      font-size: 13px;
+      line-height: 1.4;
+      color: #5D5875;
+      max-width: 350px;
+      margin: 0 0 16px;
+    }
+    .sp-hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sp-hero-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+      color: #FFFFFF;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 9px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+    }
+    .sp-hero-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      padding: 8.5px 22px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(139,92,246,0.4);
+      background: rgba(255,255,255,0.7);
+      color: #6D28D9;
+      font-size: 13.5px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* Center Column — Interactive & Animated Innovation Hub */
+    .sp-hero-center {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      min-height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .sp-hero-hub-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      height: 198px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Central 3D Glowing Bulb Asset */
+    .sp-hub-bulb-wrap {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: sp-bulb-float 4.5s ease-in-out infinite;
+    }
+    .sp-hub-bulb-img {
+      height: 185px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 24px rgba(147, 51, 234, 0.28));
+      pointer-events: none;
+    }
+    @keyframes sp-bulb-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* SVG Connecting Dotted Lines with Stroke Draw Animation */
+    .sp-hub-lines-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .sp-hub-line {
+      stroke: #A78BFA;
+      stroke-width: 1.8;
+      stroke-dasharray: 4 4;
+      fill: none;
+      stroke-linecap: round;
+      opacity: 0.85;
+      animation: sp-line-draw 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    @keyframes sp-line-draw {
+      from { stroke-dashoffset: 80; opacity: 0; }
+      to { stroke-dashoffset: 0; opacity: 0.85; }
+    }
+
+    /* Orbiting Node Badges */
+    .sp-orbit-node {
+      position: absolute;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      animation: sp-node-appear 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      cursor: default;
+    }
+    .sp-orbit-node:hover .sp-node-circle {
+      transform: scale(1.12);
+      box-shadow: 0 8px 20px rgba(109, 40, 217, 0.45);
+    }
+    .sp-node-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.6);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(107, 33, 168, 0.35);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .sp-node-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #2E1065;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Node Positions — Balanced and Symmetrical */
+    .sp-node-top-left {
+      left: 78px;
+      top: 14px;
+      animation-delay: 0.25s;
+    }
+    .sp-node-bottom-left {
+      left: 78px;
+      bottom: 14px;
+      animation-delay: 0.4s;
+    }
+    .sp-node-top-right {
+      right: 78px;
+      top: 14px;
+      animation-delay: 0.32s;
+    }
+    .sp-node-bottom-right {
+      right: 68px;
+      bottom: 14px;
+      animation-delay: 0.48s;
+    }
+
+    @keyframes sp-node-appear {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(8px);
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.15) translateY(-2px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* Script Handwriting Text — Positioned with plenty of breathing room */
+    .sp-hub-script-text {
+      position: absolute;
+      left: -8px;
+      top: 48px;
+      transform: rotate(-7deg);
+      font-family: 'Caveat', cursive, sans-serif;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #6D28D9;
+      line-height: 1.25;
+      text-align: center;
+      max-width: 80px;
+      pointer-events: none;
+      z-index: 6;
+      animation: sp-fade-in 0.8s ease-out 0.5s both;
+    }
+    .sp-hub-script-text span {
+      display: block;
+      color: #7C3AED;
+      font-size: 13.5px;
+    }
+    @keyframes sp-fade-in {
+      from { opacity: 0; transform: rotate(-7deg) translateX(-8px); }
+      to { opacity: 1; transform: rotate(-7deg) translateX(0); }
+    }
+
+    /* Sparkles */
+    .sp-hub-sparkle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 3;
+      animation: sp-sparkle-twinkle 3s ease-in-out infinite;
+    }
+    @keyframes sp-sparkle-twinkle {
+      0%, 100% { opacity: 0.85; transform: scale(1); }
+      50% { opacity: 0.25; transform: scale(0.6); }
+    }
+
+    /* Right Column: 4 Pillars */
+    .sp-hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      padding-left: 8px;
+    }
+    .sp-hero-pillars-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .sp-pillar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sp-pillar-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      border: 1.5px solid rgba(196,181,253,0.7);
+      color: #7C3AED;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(107,47,168,0.06);
+    }
+    .sp-pillar-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2E284A;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="sp-hero-card">
+    <div class="sp-hero-bg-waves"></div>
+
+    <!-- Left Column -->
+    <div class="sp-hero-left">
+      <div class="sp-hero-eyebrow">SPARK IDEAS PLATFORM</div>
+      <h1 class="sp-hero-title">
+        Ideas today<br />
+        <span class="sp-hero-title-highlight">for a better tomorrow</span>
+      </h1>
+      <p class="sp-hero-sub">
+        Share innovative ideas, collaborate with teams, and help build a better GWC.
+      </p>
+      <div class="sp-hero-actions">
+        <a href="#" class="sp-hero-btn-primary">+ Submit an idea</a>
+        <a href="#" class="sp-hero-btn-secondary">Explore ideas</a>
+      </div>
+    </div>
+
+    <!-- Center Column — Animated Innovation Hub with 3D Lightbulb -->
+    <div class="sp-hero-center">
+      <div class="sp-hero-hub-container">
+        <!-- Connecting Dotted Lines SVG -->
+        <svg class="sp-hub-lines-svg" viewBox="0 0 500 198">
+          <!-- Bulb center is ~ (250, 80) -->
+          <!-- Line to Node 1 (Top Left, x=96, y=32) -->
+          <path class="sp-hub-line" d="M 215 65 C 180 54, 145 42, 114 34" />
+          <!-- Line to Node 2 (Bottom Left, x=96, y=148) -->
+          <path class="sp-hub-line" d="M 215 95 C 180 110, 145 128, 114 144" />
+          <!-- Line to Node 3 (Top Right, x=404, y=32) -->
+          <path class="sp-hub-line" d="M 285 65 C 320 54, 355 42, 386 34" />
+          <!-- Line to Node 4 (Bottom Right, x=404, y=148) -->
+          <path class="sp-hub-line" d="M 285 95 C 320 110, 360 128, 396 144" />
+        </svg>
+
+        <!-- Script Handwriting Text on Left -->
+        <div class="sp-hub-script-text">
+          Your idea
+          <span>can make</span>
+          a difference
+        </div>
+
+        <!-- 4 Orbiting Innovation Badges -->
+        <!-- 1. Innovate (Rocket) -->
+        <div class="sp-orbit-node sp-node-top-left">
+          <div class="sp-node-circle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+              <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+            </svg>
+          </div>
+          <span class="sp-node-label">Innovate</span>
+        </div>
+
+        <!-- 2. Collaborate (Users) -->
+        <div class="sp-orbit-node sp-node-bottom-left">
+          <div class="sp-node-circle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <span class="sp-node-label">Collaborate</span>
+        </div>
+
+        <!-- 3. Improve (Process / User Badge) -->
+        <div class="sp-orbit-node sp-node-top-right">
+          <div class="sp-node-circle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <span class="sp-node-label">Improve</span>
+        </div>
+
+        <!-- 4. Create value (Bar Chart) -->
+        <div class="sp-orbit-node sp-node-bottom-right">
+          <div class="sp-node-circle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <span class="sp-node-label">Create value</span>
+        </div>
+
+        <!-- Sparkles -->
+        <div class="sp-hub-sparkle" style="left: 145px; top: 18px; color: #F59E0B;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+        </div>
+        <div class="sp-hub-sparkle" style="right: 140px; top: 18px; color: #A855F7; animation-delay: 1.5s;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#A855F7"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+        </div>
+
+        <!-- ONLY 3D GLOWING BULB ASSET -->
+        <div class="sp-hub-bulb-wrap">
+          <img
+            src="../public/assets/hero_bulb_only_transparent.png"
+            alt="Spark Glowing Innovation Lightbulb"
+            class="sp-hub-bulb-img"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="sp-hero-right">
+      <div class="sp-hero-pillars-list">
+        <div class="sp-pillar-item">
+          <div class="sp-pillar-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <span class="sp-pillar-text">Solve real problems</span>
+        </div>
+        <div class="sp-pillar-item">
+          <div class="sp-pillar-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span class="sp-pillar-text">Improve processes</span>
+        </div>
+        <div class="sp-pillar-item">
+          <div class="sp-pillar-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <span class="sp-pillar-text">Create value</span>
+        </div>
+        <div class="sp-pillar-item">
+          <div class="sp-pillar-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v18M3 12h18M5.3 5.3l13.4 13.4M5.3 18.7L18.7 5.3"/></svg>
+          </div>
+          <span class="sp-pillar-text">Be a part of change</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>''')
+
+edge_paths = [
+    r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe',
+    r'C:\Program Files\Microsoft\Edge\Application\msedge.exe',
+    r'C:\Program Files\Google\Chrome\Application\chrome.exe'
+]
+browser_exe = next(p for p in edge_paths if os.path.exists(p))
+
+out_png = os.path.abspath('scratch/browser_animated_hero_v4.png')
+cmd = [browser_exe, '--headless', '--virtual-time-budget=3500', f'--screenshot={out_png}', '--window-size=1200,340', f'file:///{html_path}']
+subprocess.run(cmd, check=True)
+print('Rendered V4 animated hero preview!')

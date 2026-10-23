@@ -1,0 +1,271 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/ideacenter/pages/ReviewPage.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=093d1749"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+var _s = $RefreshSig$();
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=093d1749"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react; const useState = __vite__cjsImport3_react["useState"];
+import { api } from "/src/ideacenter/api/ideaApi.js?t=1791624950569";
+import { useAsync } from "/src/ideacenter/hooks/useAsync.js";
+import { useSpark } from "/src/ideacenter/hooks/SparkContext.jsx";
+import { useCurrentUser } from "/src/ideacenter/hooks/useCurrentUser.jsx?t=1791624950569";
+import { weightedScore } from "/src/ideacenter/lib/scoring.js";
+import FilterBar, { EMPTY_FILTERS } from "/src/ideacenter/components/FilterBar.jsx";
+import { Pill, Tag, DueBadge, Recommended, AsyncView } from "/src/ideacenter/components/ui.jsx";
+export default function ReviewPage() {
+  _s();
+  const user = useCurrentUser();
+  const { openIdea, version } = useSpark();
+  const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const state = useAsync(() => api.listIdeas({ ...filters, scope: "assigned" }), [filters, version, user?.id]);
+  const admin = user?.role === "admin";
+  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-pagehead", children: /* @__PURE__ */ jsxDEV("div", { children: [
+      /* @__PURE__ */ jsxDEV("h1", { children: "Review queue" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+        lineNumber: 37,
+        columnNumber: 41
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { children: "Score ideas, decide, and move approved ones to the next stage." }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+        lineNumber: 37,
+        columnNumber: 62
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+      lineNumber: 37,
+      columnNumber: 36
+    }, this) }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+      lineNumber: 37,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-banner", children: [
+      admin ? "You are an admin, so you see every idea and can assign reviewers." : "You are a reviewer, so you see only the ideas assigned to you.",
+      state.data ? ` Showing ${state.data.length}.` : ""
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+      lineNumber: 38,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(FilterBar, { value: filters, onChange: setFilters }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+      lineNumber: 42,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(
+      AsyncView,
+      {
+        state,
+        isEmpty: (d) => d.length === 0,
+        empty: admin ? "No ideas match these filters." : "Nothing is assigned to you right now. An admin will assign ideas to you.",
+        children: (list) => /* @__PURE__ */ jsxDEV("div", { className: "sp-tablewrap", children: /* @__PURE__ */ jsxDEV("table", { className: "sp-table", children: [
+          /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
+            /* @__PURE__ */ jsxDEV("th", { children: "ID" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 48,
+              columnNumber: 26
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Idea" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 48,
+              columnNumber: 37
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Submitted by" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 48,
+              columnNumber: 50
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Status" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 48,
+              columnNumber: 71
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Reviewer" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 48,
+              columnNumber: 86
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Score" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 48,
+              columnNumber: 103
+            }, this),
+            /* @__PURE__ */ jsxDEV("th", { children: "Reply" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 48,
+              columnNumber: 117
+            }, this)
+          ] }, void 0, true, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+            lineNumber: 48,
+            columnNumber: 22
+          }, this) }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+            lineNumber: 48,
+            columnNumber: 15
+          }, this),
+          /* @__PURE__ */ jsxDEV("tbody", { children: list.map((i) => {
+            const w = weightedScore(i.scores);
+            return /* @__PURE__ */ jsxDEV("tr", { children: [
+              /* @__PURE__ */ jsxDEV("td", { className: "sp-id", children: i.id }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 54,
+                columnNumber: 23
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: [
+                /* @__PURE__ */ jsxDEV("button", { className: "sp-linkcell", onClick: () => openIdea(i.id), children: i.title }, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 56,
+                  columnNumber: 25
+                }, this),
+                /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 56,
+                  columnNumber: 106
+                }, this),
+                /* @__PURE__ */ jsxDEV(Tag, { children: i.category }, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 57,
+                  columnNumber: 25
+                }, this),
+                " ",
+                /* @__PURE__ */ jsxDEV(Tag, { children: i.technology }, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 57,
+                  columnNumber: 49
+                }, this)
+              ] }, void 0, true, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 55,
+                columnNumber: 23
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: [
+                i.submitterName,
+                /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 59,
+                  columnNumber: 44
+                }, this),
+                /* @__PURE__ */ jsxDEV("span", { className: "sp-meta", children: i.dept || i.submitterType }, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 59,
+                  columnNumber: 50
+                }, this)
+              ] }, void 0, true, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 59,
+                columnNumber: 23
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV(Pill, { status: i.status }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 60,
+                columnNumber: 27
+              }, this) }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 60,
+                columnNumber: 23
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: i.assigneeName || /* @__PURE__ */ jsxDEV("span", { className: "sp-due sp-soon", children: "Unassigned" }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 61,
+                columnNumber: 46
+              }, this) }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 61,
+                columnNumber: 23
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: [
+                w ? `${w.toFixed(1)} / 5` : "Not scored",
+                /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 62,
+                  columnNumber: 69
+                }, this),
+                /* @__PURE__ */ jsxDEV(Recommended, { scores: i.scores }, void 0, false, {
+                  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                  lineNumber: 62,
+                  columnNumber: 75
+                }, this)
+              ] }, void 0, true, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 62,
+                columnNumber: 23
+              }, this),
+              /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV(DueBadge, { idea: i }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 63,
+                columnNumber: 27
+              }, this) }, void 0, false, {
+                fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+                lineNumber: 63,
+                columnNumber: 23
+              }, this)
+            ] }, i.id, true, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+              lineNumber: 53,
+              columnNumber: 19
+            }, this);
+          }) }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+            lineNumber: 49,
+            columnNumber: 15
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+          lineNumber: 47,
+          columnNumber: 13
+        }, this) }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+          lineNumber: 46,
+          columnNumber: 9
+        }, this)
+      },
+      void 0,
+      false,
+      {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+        lineNumber: 43,
+        columnNumber: 7
+      },
+      this
+    )
+  ] }, void 0, true, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx",
+    lineNumber: 36,
+    columnNumber: 5
+  }, this);
+}
+_s(ReviewPage, "cwqWAr+cBF5c5qwfFOA9SAapHmE=", false, function() {
+  return [useCurrentUser, useSpark, useAsync];
+});
+_c = ReviewPage;
+var _c;
+$RefreshReg$(_c, "ReviewPage");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/ReviewPage.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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dkI7QUFBQTtBQUFBO0FBQUE7QUFBQSx1QkFBOEI7QUFBQSxtQkFBbEY7QUFBQTtBQUFBO0FBQUE7QUFBQSxxQkFBcUY7QUFBQSxjQUNyRix1QkFBQyxRQUFHLGlDQUFDLFlBQVMsTUFBTUYsS0FBaEI7QUFBQTtBQUFBO0FBQUE7QUFBQSxxQkFBa0IsS0FBdEI7QUFBQTtBQUFBO0FBQUE7QUFBQSxxQkFBeUI7QUFBQSxpQkFWbEJBLEVBQUVSLElBQVg7QUFBQTtBQUFBO0FBQUE7QUFBQSxtQkFXQTtBQUFBLFVBRUosQ0FBQyxLQWpCSDtBQUFBO0FBQUE7QUFBQTtBQUFBLGlCQWtCQTtBQUFBLGFBcEJGO0FBQUE7QUFBQTtBQUFBO0FBQUEsZUFxQkEsS0F0QkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxlQXVCQTtBQUFBO0FBQUEsTUExQko7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLElBNEJBO0FBQUEsT0FuQ0Y7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQW9DQTtBQUVKO0FBQUNULEdBN0N1QkQsWUFBVTtBQUFBLFVBQ25CVCxnQkFDaUJELFVBRWhCRCxRQUFRO0FBQUE7QUFBQSxLQUpBVztBQUFVLElBQUE4QjtBQUFBLGFBQUFBLElBQUEiLCJuYW1lcyI6WyJSZWFjdCIsInVzZVN0YXRlIiwiYXBpIiwidXNlQXN5bmMiLCJ1c2VTcGFyayIsInVzZUN1cnJlbnRVc2VyIiwid2VpZ2h0ZWRTY29yZSIsIkZpbHRlckJhciIsIkVNUFRZX0ZJTFRFUlMiLCJQaWxsIiwiVGFnIiwiRHVlQmFkZ2UiLCJSZWNvbW1lbmRlZCIsIkFzeW5jVmlldyIsIlJldmlld1BhZ2UiLCJfcyIsInVzZXIiLCJvcGVuSWRlYSIsInZlcnNpb24iLCJmaWx0ZXJzIiwic2V0RmlsdGVycyIsInN0YXRlIiwibGlzdElkZWFzIiwic2NvcGUiLCJpZCIsImFkbWluIiwicm9sZSIsImRhdGEiLCJsZW5ndGgiLCJkIiwibGlzdCIsIm1hcCIsImkiLCJ3Iiwic2NvcmVzIiwidGl0bGUiLCJjYXRlZ29yeSIsInRlY2hub2xvZ3kiLCJzdWJtaXR0ZXJOYW1lIiwiZGVwdCIsInN1Ym1pdHRlclR5cGUiLCJzdGF0dXMiLCJhc3NpZ25lZU5hbWUiLCJ0b0ZpeGVkIiwiX2MiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiUmV2aWV3UGFnZS5qc3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgYXBpIH0gZnJvbSAnLi4vYXBpL2lkZWFBcGkuanMnO1xuaW1wb3J0IHsgdXNlQXN5bmMgfSBmcm9tICcuLi9ob29rcy91c2VBc3luYy5qcyc7XG5pbXBvcnQgeyB1c2VTcGFyayB9IGZyb20gJy4uL2hvb2tzL1NwYXJrQ29udGV4dC5qc3gnO1xuaW1wb3J0IHsgdXNlQ3VycmVudFVzZXIgfSBmcm9tICcuLi9ob29rcy91c2VDdXJyZW50VXNlci5qc3gnO1xuaW1wb3J0IHsgd2VpZ2h0ZWRTY29yZSB9IGZyb20gJy4uL2xpYi9zY29yaW5nLmpzJztcbmltcG9ydCBGaWx0ZXJCYXIsIHsgRU1QVFlfRklMVEVSUyB9IGZyb20gJy4uL2NvbXBvbmVudHMvRmlsdGVyQmFyLmpzeCc7XG5pbXBvcnQgeyBQaWxsLCBUYWcsIER1ZUJhZGdlLCBSZWNvbW1lbmRlZCwgQXN5bmNWaWV3IH0gZnJvbSAnLi4vY29tcG9uZW50cy91aS5qc3gnO1xuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBSZXZpZXdQYWdlKCkge1xuICBjb25zdCB1c2VyID0gdXNlQ3VycmVudFVzZXIoKTtcbiAgY29uc3QgeyBvcGVuSWRlYSwgdmVyc2lvbiB9ID0gdXNlU3BhcmsoKTtcbiAgY29uc3QgW2ZpbHRlcnMsIHNldEZpbHRlcnNdID0gdXNlU3RhdGUoRU1QVFlfRklMVEVSUyk7XG4gIGNvbnN0IHN0YXRlID0gdXNlQXN5bmMoKCkgPT4gYXBpLmxpc3RJZGVhcyh7IC4uLmZpbHRlcnMsIHNjb3BlOiAnYXNzaWduZWQnIH0pLCBbZmlsdGVycywgdmVyc2lvbiwgdXNlcj8uaWRdKTtcbiAgY29uc3QgYWRtaW4gPSB1c2VyPy5yb2xlID09PSAnYWRtaW4nO1xuICByZXR1cm4gKFxuICAgIDw+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLXBhZ2VoZWFkXCI+PGRpdj48aDE+UmV2aWV3IHF1ZXVlPC9oMT48cD5TY29yZSBpZGVhcywgZGVjaWRlLCBhbmQgbW92ZSBhcHByb3ZlZCBvbmVzIHRvIHRoZSBuZXh0IHN0YWdlLjwvcD48L2Rpdj48L2Rpdj5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3AtYmFubmVyXCI+XG4gICAgICAgIHthZG1pbiA/ICdZb3UgYXJlIGFuIGFkbWluLCBzbyB5b3Ugc2VlIGV2ZXJ5IGlkZWEgYW5kIGNhbiBhc3NpZ24gcmV2aWV3ZXJzLicgOiAnWW91IGFyZSBhIHJldmlld2VyLCBzbyB5b3Ugc2VlIG9ubHkgdGhlIGlkZWFzIGFzc2lnbmVkIHRvIHlvdS4nfVxuICAgICAgICB7c3RhdGUuZGF0YSA/IGAgU2hvd2luZyAke3N0YXRlLmRhdGEubGVuZ3RofS5gIDogJyd9XG4gICAgICA8L2Rpdj5cbiAgICAgIDxGaWx0ZXJCYXIgdmFsdWU9e2ZpbHRlcnN9IG9uQ2hhbmdlPXtzZXRGaWx0ZXJzfSAvPlxuICAgICAgPEFzeW5jVmlldyBzdGF0ZT17c3RhdGV9IGlzRW1wdHk9eyhkKSA9PiBkLmxlbmd0aCA9PT0gMH1cbiAgICAgICAgZW1wdHk9e2FkbWluID8gJ05vIGlkZWFzIG1hdGNoIHRoZXNlIGZpbHRlcnMuJyA6ICdOb3RoaW5nIGlzIGFzc2lnbmVkIHRvIHlvdSByaWdodCBub3cuIEFuIGFkbWluIHdpbGwgYXNzaWduIGlkZWFzIHRvIHlvdS4nfT5cbiAgICAgICAgeyhsaXN0KSA9PiAoXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcC10YWJsZXdyYXBcIj5cbiAgICAgICAgICAgIDx0YWJsZSBjbGFzc05hbWU9XCJzcC10YWJsZVwiPlxuICAgICAgICAgICAgICA8dGhlYWQ+PHRyPjx0aD5JRDwvdGg+PHRoPklkZWE8L3RoPjx0aD5TdWJtaXR0ZWQgYnk8L3RoPjx0aD5TdGF0dXM8L3RoPjx0aD5SZXZpZXdlcjwvdGg+PHRoPlNjb3JlPC90aD48dGg+UmVwbHk8L3RoPjwvdHI+PC90aGVhZD5cbiAgICAgICAgICAgICAgPHRib2R5PlxuICAgICAgICAgICAgICAgIHtsaXN0Lm1hcCgoaSkgPT4ge1xuICAgICAgICAgICAgICAgICAgY29uc3QgdyA9IHdlaWdodGVkU2NvcmUoaS5zY29yZXMpO1xuICAgICAgICAgICAgICAgICAgcmV0dXJuIChcbiAgICAgICAgICAgICAgICAgICAgPHRyIGtleT17aS5pZH0+XG4gICAgICAgICAgICAgICAgICAgICAgPHRkIGNsYXNzTmFtZT1cInNwLWlkXCI+e2kuaWR9PC90ZD5cbiAgICAgICAgICAgICAgICAgICAgICA8dGQ+XG4gICAgICAgICAgICAgICAgICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT1cInNwLWxpbmtjZWxsXCIgb25DbGljaz17KCkgPT4gb3BlbklkZWEoaS5pZCl9PntpLnRpdGxlfTwvYnV0dG9uPjxiciAvPlxuICAgICAgICAgICAgICAgICAgICAgICAgPFRhZz57aS5jYXRlZ29yeX08L1RhZz4gPFRhZz57aS50ZWNobm9sb2d5fTwvVGFnPlxuICAgICAgICAgICAgICAgICAgICAgIDwvdGQ+XG4gICAgICAgICAgICAgICAgICAgICAgPHRkPntpLnN1Ym1pdHRlck5hbWV9PGJyIC8+PHNwYW4gY2xhc3NOYW1lPVwic3AtbWV0YVwiPntpLmRlcHQgfHwgaS5zdWJtaXR0ZXJUeXBlfTwvc3Bhbj48L3RkPlxuICAgICAgICAgICAgICAgICAgICAgIDx0ZD48UGlsbCBzdGF0dXM9e2kuc3RhdHVzfSAvPjwvdGQ+XG4gICAgICAgICAgICAgICAgICAgICAgPHRkPntpLmFzc2lnbmVlTmFtZSB8fCA8c3BhbiBjbGFzc05hbWU9XCJzcC1kdWUgc3Atc29vblwiPlVuYXNzaWduZWQ8L3NwYW4+fTwvdGQ+XG4gICAgICAgICAgICAgICAgICAgICAgPHRkPnt3ID8gYCR7dy50b0ZpeGVkKDEpfSAvIDVgIDogJ05vdCBzY29yZWQnfTxiciAvPjxSZWNvbW1lbmRlZCBzY29yZXM9e2kuc2NvcmVzfSAvPjwvdGQ+XG4gICAgICAgICAgICAgICAgICAgICAgPHRkPjxEdWVCYWRnZSBpZGVhPXtpfSAvPjwvdGQ+XG4gICAgICAgICAgICAgICAgICAgIDwvdHI+XG4gICAgICAgICAgICAgICAgICApO1xuICAgICAgICAgICAgICAgIH0pfVxuICAgICAgICAgICAgICA8L3Rib2R5PlxuICAgICAgICAgICAgPC90YWJsZT5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKX1cbiAgICAgIDwvQXN5bmNWaWV3PlxuICAgIDwvPlxuICApO1xufVxuIl0sImZpbGUiOiJEOi9Eb3dubG9hZHMvU3BhcmtfcHJvdG90eXBlX3Byb2plY3Qvc3BhcmstcHJvdG90eXBlL3NyYy9pZGVhY2VudGVyL3BhZ2VzL1Jldmlld1BhZ2UuanN4In0=

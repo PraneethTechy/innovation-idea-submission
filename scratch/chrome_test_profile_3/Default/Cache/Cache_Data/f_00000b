@@ -1,0 +1,747 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/ideacenter/components/DetailsDrawer.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=093d1749"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+var _s = $RefreshSig$(), _s2 = $RefreshSig$(), _s3 = $RefreshSig$();
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=093d1749"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react; const useEffect = __vite__cjsImport3_react["useEffect"]; const useRef = __vite__cjsImport3_react["useRef"]; const useState = __vite__cjsImport3_react["useState"];
+import { api } from "/src/ideacenter/api/ideaApi.js?t=1791624950569";
+import { asMessage } from "/src/ideacenter/api/errors.js";
+import { useAsync } from "/src/ideacenter/hooks/useAsync.js";
+import { useCurrentUser } from "/src/ideacenter/hooks/useCurrentUser.jsx?t=1791624950569";
+import { useSpark } from "/src/ideacenter/hooks/SparkContext.jsx";
+import { canReview, canAssign, canReply, canView } from "/src/ideacenter/permissions.js";
+import { SCORING_CRITERIA, NEXT_STAGES, REJECTION_REASONS, EFFORT_LABEL, LIMITS } from "/src/ideacenter/lookups.js";
+import { allScored, weightedScore } from "/src/ideacenter/lib/scoring.js";
+import { computeRoi, annualBenefit, inr } from "/src/ideacenter/lib/roi.js";
+import { fdate } from "/src/ideacenter/lib/dates.js";
+import { Pill, Tag, Recommended, Loading, ErrorState } from "/src/ideacenter/components/ui.jsx";
+const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+const Row = ({ k, v }) => v ? /* @__PURE__ */ jsxDEV(Fragment, { children: [
+  /* @__PURE__ */ jsxDEV("dt", { children: k }, void 0, false, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+    lineNumber: 35,
+    columnNumber: 33
+  }, this),
+  /* @__PURE__ */ jsxDEV("dd", { children: v }, void 0, false, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+    lineNumber: 35,
+    columnNumber: 45
+  }, this)
+] }, void 0, true, {
+  fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+  lineNumber: 35,
+  columnNumber: 31
+}, this) : null;
+_c = Row;
+export default function DetailsDrawer() {
+  _s();
+  const { openId, closeIdea, bump, toast } = useSpark();
+  const user = useCurrentUser();
+  const ref = useRef(null);
+  const state = useAsync(() => api.getIdea(openId), [openId]);
+  useEffect(() => {
+    const prev = document.activeElement;
+    ref.current?.focus();
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        closeIdea();
+        return;
+      }
+      if (e.key !== "Tab" || !ref.current) return;
+      const els = [...ref.current.querySelectorAll(FOCUSABLE)];
+      if (!els.length) {
+        e.preventDefault();
+        return;
+      }
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === ref.current)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey, true);
+    return () => {
+      document.removeEventListener("keydown", onKey, true);
+      if (prev && prev.focus) prev.focus();
+    };
+  }, [closeIdea]);
+  const idea = state.data;
+  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-scrim", onClick: closeIdea, "aria-hidden": "true" }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 67,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("aside", { className: "sp-drawer", ref, role: "dialog", "aria-modal": "true", "aria-label": "Idea details", tabIndex: -1, children: [
+      /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-ghost sp-small sp-x", onClick: closeIdea, children: "Close" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 69,
+        columnNumber: 9
+      }, this),
+      state.loading && !idea && /* @__PURE__ */ jsxDEV(Loading, { rows: 3, label: "Loading idea" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 70,
+        columnNumber: 36
+      }, this),
+      state.error && /* @__PURE__ */ jsxDEV(ErrorState, { message: state.error, onRetry: state.reload }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 71,
+        columnNumber: 25
+      }, this),
+      idea && canView(user, idea) && /* @__PURE__ */ jsxDEV(DrawerBody, { idea, user, onChanged: (updated) => {
+        if (updated) state.setData(updated);
+        bump();
+      }, toast }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 72,
+        columnNumber: 41
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 68,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+    lineNumber: 66,
+    columnNumber: 5
+  }, this);
+}
+_s(DetailsDrawer, "GMZpthES3N8HK+rkpgBe7v3tUGU=", false, function() {
+  return [useSpark, useCurrentUser, useAsync];
+});
+_c2 = DetailsDrawer;
+function DrawerBody({ idea, user, onChanged, toast }) {
+  const staff = canReview(user, idea);
+  const roi = computeRoi(idea);
+  const annual = annualBenefit(idea.financialBenefit, idea.benefitPeriod);
+  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-meta", children: [
+      /* @__PURE__ */ jsxDEV("span", { className: "sp-id", children: idea.id }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 84,
+        columnNumber: 32
+      }, this),
+      /* @__PURE__ */ jsxDEV(Pill, { status: idea.status }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 84,
+        columnNumber: 72
+      }, this),
+      /* @__PURE__ */ jsxDEV(Tag, { children: idea.category }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 84,
+        columnNumber: 101
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 84,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("h2", { children: idea.title }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 85,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("dl", { className: "sp-dl", children: [
+      /* @__PURE__ */ jsxDEV(Row, { k: "Submitted by", v: idea.submitterName }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 87,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Email", v: idea.submitterEmail }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 88,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Submitter type", v: idea.submitterType }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 89,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Department", v: idea.dept }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 90,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Reporting manager", v: idea.manager }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 91,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Submitted", v: fdate(idea.createdAt) }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 92,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Category", v: idea.category }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 93,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Technology area", v: idea.technology }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 94,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Problem", v: idea.problem }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 95,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Solution", v: idea.solution }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 96,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Expected value", v: idea.benefitType }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 97,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Value assumptions", v: idea.benefitDescription }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 98,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Estimated investment", v: idea.investment != null ? inr(idea.investment) : "" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 99,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Expected benefit", v: idea.financialBenefit != null ? `${inr(idea.financialBenefit)} (${idea.benefitPeriod.toLowerCase()})` : "" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 100,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Yearly benefit", v: annual != null && idea.benefitPeriod !== "Annual" ? `${inr(annual)}${idea.benefitPeriod === "One-time" ? " (first year)" : ""}` : "" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 101,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Indicative ROI", v: roi ? `${roi.percent.toFixed(1)}%${roi.oneTime ? " (first year)" : ""}` : "" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 102,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Estimate confidence", v: roi || idea.financialBenefit != null ? idea.roiConfidence : "" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 103,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Effort", v: EFFORT_LABEL[idea.effort] }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 104,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Tech stack", v: idea.stack }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 105,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Rough plan", v: idea.plan }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 106,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Sensitive data", v: idea.sensitive }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 107,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Credit on solution page", v: idea.consent ? "Submitter agreed to show their name" : "" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 108,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(Row, { k: "Reviewer", v: idea.assigneeName }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 109,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 86,
+      columnNumber: 7
+    }, this),
+    !staff && /* @__PURE__ */ jsxDEV(SubmitterSection, { idea, user, onChanged, toast }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 112,
+      columnNumber: 18
+    }, this),
+    staff && /* @__PURE__ */ jsxDEV(ReviewerSection, { idea, user, onChanged, toast }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 113,
+      columnNumber: 17
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-sect", children: [
+      /* @__PURE__ */ jsxDEV("h3", { children: "History" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 116,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("ul", { className: "sp-hist", children: [...idea.history].reverse().map(
+        (h, k) => /* @__PURE__ */ jsxDEV("li", { children: [
+          /* @__PURE__ */ jsxDEV("small", { children: [
+            fdate(h.t),
+            " · ",
+            h.who
+          ] }, void 0, true, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 119,
+            columnNumber: 23
+          }, this),
+          /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 119,
+            columnNumber: 60
+          }, this),
+          h.text
+        ] }, k, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 119,
+          columnNumber: 11
+        }, this)
+      ) }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 117,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 115,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+    lineNumber: 83,
+    columnNumber: 5
+  }, this);
+}
+_c3 = DrawerBody;
+function SubmitterSection({ idea, user, onChanged, toast }) {
+  _s2();
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const send = async () => {
+    if (!text.trim()) {
+      setErr("Write a reply before sending.");
+      return;
+    }
+    setBusy(true);
+    setErr("");
+    try {
+      const r = await api.submitterReply(idea.id, text);
+      toast("Reply sent to the reviewer.");
+      setText("");
+      onChanged(r);
+    } catch (e) {
+      setErr(asMessage(e));
+    }
+    setBusy(false);
+  };
+  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
+    idea.status === "Rejected" && /* @__PURE__ */ jsxDEV("div", { className: "sp-sect", children: [
+      /* @__PURE__ */ jsxDEV("h3", { children: "Decision" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 140,
+        columnNumber: 63
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { children: [
+        "Rejected: ",
+        idea.reason,
+        ". The history below has the reviewer’s note."
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 140,
+        columnNumber: 80
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 140,
+      columnNumber: 38
+    }, this),
+    idea.stage && /* @__PURE__ */ jsxDEV("div", { className: "sp-sect", children: [
+      /* @__PURE__ */ jsxDEV("h3", { children: "Next stage" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 141,
+        columnNumber: 47
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { children: idea.stage }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 141,
+        columnNumber: 66
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 141,
+      columnNumber: 22
+    }, this),
+    canReply(user, idea) && /* @__PURE__ */ jsxDEV("div", { className: "sp-sect", children: [
+      /* @__PURE__ */ jsxDEV("h3", { children: "Reply to reviewer" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 144,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { className: "sp-hint", children: "Answer the reviewer’s question here. Your reply is added to the idea history and the idea returns to review." }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 145,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("label", { className: "sp-sr", htmlFor: "d-reply", children: "Your reply" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 146,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("textarea", { id: "d-reply", maxLength: LIMITS.reply, value: text, onChange: (e) => setText(e.target.value), placeholder: "Write your response…" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 147,
+        columnNumber: 11
+      }, this),
+      err && /* @__PURE__ */ jsxDEV("div", { className: "sp-err", role: "alert", children: err }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 148,
+        columnNumber: 19
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "sp-actions", children: /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-small", disabled: busy, onClick: send, children: busy ? "Sending…" : "Send reply" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 149,
+        columnNumber: 39
+      }, this) }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 149,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 143,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+    lineNumber: 139,
+    columnNumber: 5
+  }, this);
+}
+_s2(SubmitterSection, "wqAOVI8glVcFelCr5zG/HFMOGko=");
+_c4 = SubmitterSection;
+function ReviewerSection({ idea, user, onChanged, toast }) {
+  _s3();
+  const reviewers = useAsync(() => canAssign(user) ? api.listReviewers() : Promise.resolve([]), [user?.id]);
+  const [assignee, setAssignee] = useState(idea.assigneeId || "");
+  const [note, setNote] = useState("");
+  const [stage, setStage] = useState("");
+  const [reason, setReason] = useState("");
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const w = weightedScore(idea.scores);
+  const run = async (fn, ok) => {
+    setBusy(true);
+    setErr("");
+    try {
+      const r = await fn();
+      if (ok) toast(ok);
+      onChanged(r);
+    } catch (e) {
+      setErr(asMessage(e));
+    }
+    setBusy(false);
+  };
+  const score = (key, n) => run(() => api.scoreIdea(idea.id, key, n));
+  const assign = () => run(() => api.assignReviewer(idea.id, assignee), "Reviewer saved.");
+  const decide = (status) => {
+    if (status === "Approved") {
+      if (!allScored(idea.scores)) return setErr("Score every criterion before approving.");
+      if (!stage) return setErr("Choose the next stage for this idea.");
+    }
+    if (status === "Rejected") {
+      if (!reason) return setErr("Choose a reason for rejecting.");
+      if (!note.trim()) return setErr("Add a short note so the submitter understands the decision.");
+    }
+    if (status === "Needs info" && !note.trim()) return setErr("Write the question you need answered.");
+    return run(() => api.decide(idea.id, { status, note, stage, reason }), `${idea.id} updated to ${status}.`).then(() => setNote(""));
+  };
+  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
+    canAssign(user) && /* @__PURE__ */ jsxDEV("div", { className: "sp-sect", children: [
+      /* @__PURE__ */ jsxDEV("h3", { children: "Reviewer" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 192,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "sp-assign", children: [
+        /* @__PURE__ */ jsxDEV("label", { className: "sp-sr", htmlFor: "d-assign", children: "Assign reviewer" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 194,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("select", { id: "d-assign", value: assignee, onChange: (e) => setAssignee(e.target.value), children: [
+          /* @__PURE__ */ jsxDEV("option", { value: "", children: "Unassigned" }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 196,
+            columnNumber: 15
+          }, this),
+          (reviewers.data || []).map((r) => /* @__PURE__ */ jsxDEV("option", { value: r.id, children: r.name }, r.id, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 197,
+            columnNumber: 50
+          }, this))
+        ] }, void 0, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 195,
+          columnNumber: 13
+        }, this),
+        /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-ghost sp-small", disabled: busy, onClick: assign, children: "Save reviewer" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 199,
+          columnNumber: 13
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 193,
+        columnNumber: 11
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 191,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-sect", children: [
+      /* @__PURE__ */ jsxDEV("h3", { children: "Score" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 204,
+        columnNumber: 9
+      }, this),
+      SCORING_CRITERIA.map(
+        (c) => /* @__PURE__ */ jsxDEV("div", { className: "sp-score", children: [
+          /* @__PURE__ */ jsxDEV("span", { children: c.label }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 207,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "sp-dots", role: "group", "aria-label": c.label, children: [1, 2, 3, 4, 5].map(
+            (n) => /* @__PURE__ */ jsxDEV("button", { disabled: busy, "aria-pressed": idea.scores[c.key] === n, "aria-label": `${c.label}: ${n} out of 5`, onClick: () => score(c.key, n), children: n }, n, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+              lineNumber: 210,
+              columnNumber: 13
+            }, this)
+          ) }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 208,
+            columnNumber: 13
+          }, this)
+        ] }, c.key, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 206,
+          columnNumber: 9
+        }, this)
+      ),
+      /* @__PURE__ */ jsxDEV("div", { className: "sp-score", children: [
+        /* @__PURE__ */ jsxDEV("span", { children: [
+          "Overall ",
+          /* @__PURE__ */ jsxDEV(Recommended, { scores: idea.scores }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 216,
+            columnNumber: 25
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 216,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("span", { className: "sp-total", children: w ? `${w.toFixed(1)} / 5` : "Not scored" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 217,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 215,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 203,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-sect", children: [
+      /* @__PURE__ */ jsxDEV("h3", { children: "Decision" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 221,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "sp-field", children: [
+        /* @__PURE__ */ jsxDEV("label", { htmlFor: "d-note", children: "Note to the submitter" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 223,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("textarea", { id: "d-note", maxLength: LIMITS.note, value: note, onChange: (e) => setNote(e.target.value), placeholder: "Required when you reject or ask for more information" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 224,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 222,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "sp-row2", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "sp-field", children: [
+          /* @__PURE__ */ jsxDEV("label", { htmlFor: "d-stage", children: "Next stage if approved" }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 228,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("select", { id: "d-stage", value: stage, onChange: (e) => setStage(e.target.value), children: [
+            /* @__PURE__ */ jsxDEV("option", { value: "", children: "Choose a stage" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+              lineNumber: 230,
+              columnNumber: 15
+            }, this),
+            NEXT_STAGES.map((s) => /* @__PURE__ */ jsxDEV("option", { children: s }, s, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+              lineNumber: 231,
+              columnNumber: 39
+            }, this))
+          ] }, void 0, true, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 229,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 227,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "sp-field", children: [
+          /* @__PURE__ */ jsxDEV("label", { htmlFor: "d-reason", children: "Reason if rejected" }, void 0, false, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 235,
+            columnNumber: 13
+          }, this),
+          /* @__PURE__ */ jsxDEV("select", { id: "d-reason", value: reason, onChange: (e) => setReason(e.target.value), children: [
+            /* @__PURE__ */ jsxDEV("option", { value: "", children: "Choose a reason" }, void 0, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+              lineNumber: 237,
+              columnNumber: 15
+            }, this),
+            REJECTION_REASONS.map((s) => /* @__PURE__ */ jsxDEV("option", { children: s }, s, false, {
+              fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+              lineNumber: 238,
+              columnNumber: 45
+            }, this))
+          ] }, void 0, true, {
+            fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+            lineNumber: 236,
+            columnNumber: 13
+          }, this)
+        ] }, void 0, true, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 234,
+          columnNumber: 11
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 226,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "sp-actions", children: [
+        /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-small", disabled: busy, onClick: () => decide("Approved"), children: "Approve" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 243,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-ghost sp-small", disabled: busy, onClick: () => decide("Under review"), children: "Start review" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 244,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-ghost sp-small", disabled: busy, onClick: () => decide("Needs info"), children: "Ask for more info" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 245,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-ghost sp-small", disabled: busy, onClick: () => decide("Parked"), children: "Park" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 246,
+          columnNumber: 11
+        }, this),
+        /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-warn sp-small", disabled: busy, onClick: () => decide("Rejected"), children: "Reject" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 247,
+          columnNumber: 11
+        }, this),
+        idea.status === "Approved" && /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-ghost sp-small", disabled: busy, onClick: () => decide("In build"), children: "Move to build" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 248,
+          columnNumber: 42
+        }, this),
+        idea.status === "In build" && /* @__PURE__ */ jsxDEV("button", { className: "sp-btn sp-ghost sp-small", disabled: busy, onClick: () => decide("Delivered"), children: "Mark delivered" }, void 0, false, {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+          lineNumber: 249,
+          columnNumber: 42
+        }, this)
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 242,
+        columnNumber: 9
+      }, this),
+      err && /* @__PURE__ */ jsxDEV("div", { className: "sp-err", role: "alert", children: err }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+        lineNumber: 251,
+        columnNumber: 17
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+      lineNumber: 220,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx",
+    lineNumber: 189,
+    columnNumber: 5
+  }, this);
+}
+_s3(ReviewerSection, "Z4pHOcqJ/Iz4eR4ommTNf292h2w=", false, function() {
+  return [useAsync];
+});
+_c5 = ReviewerSection;
+var _c, _c2, _c3, _c4, _c5;
+$RefreshReg$(_c, "Row");
+$RefreshReg$(_c2, "DetailsDrawer");
+$RefreshReg$(_c3, "DrawerBody");
+$RefreshReg$(_c4, "SubmitterSection");
+$RefreshReg$(_c5, "ReviewerSection");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/components/DetailsDrawer.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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TSxTQUFTLE1BQU1vQyxPQUFPLFdBQVcsR0FBRyw4QkFBakc7QUFBQTtBQUFBO0FBQUE7QUFBQSxlQUErRztBQUFBLFdBUGhKO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFRQTtBQUFBLE1BQ0NsQyxPQUFPLHVCQUFDLFNBQUksV0FBVSxVQUFTLE1BQUssU0FBU0EsaUJBQXRDO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFBMEM7QUFBQSxTQS9CcEQ7QUFBQTtBQUFBO0FBQUE7QUFBQSxXQWdDQTtBQUFBLE9BL0RGO0FBQUE7QUFBQTtBQUFBO0FBQUEsU0FnRUE7QUFFSjtBQUFDWSxJQW5HUUQsaUJBQWU7QUFBQSxVQUNKekgsUUFBUTtBQUFBO0FBQUEsTUFEbkJ5SDtBQUFlLElBQUE5RixJQUFBMkgsS0FBQTlDLEtBQUErQyxLQUFBQztBQUFBLGFBQUE3SCxJQUFBO0FBQUEsYUFBQTJILEtBQUE7QUFBQSxhQUFBOUMsS0FBQTtBQUFBLGFBQUErQyxLQUFBO0FBQUEsYUFBQUMsS0FBQSIsIm5hbWVzIjpbIlJlYWN0IiwidXNlRWZmZWN0IiwidXNlUmVmIiwidXNlU3RhdGUiLCJhcGkiLCJhc01lc3NhZ2UiLCJ1c2VBc3luYyIsInVzZUN1cnJlbnRVc2VyIiwidXNlU3BhcmsiLCJjYW5SZXZpZXciLCJjYW5Bc3NpZ24iLCJjYW5SZXBseSIsImNhblZpZXciLCJTQ09SSU5HX0NSSVRFUklBIiwiTkVYVF9TVEFHRVMiLCJSRUpFQ1RJT05fUkVBU09OUyIsIkVGRk9SVF9MQUJFTCIsIkxJTUlUUyIsImFsbFNjb3JlZCIsIndlaWdodGVkU2NvcmUiLCJjb21wdXRlUm9pIiwiYW5udWFsQmVuZWZpdCIsImluciIsImZkYXRlIiwiUGlsbCIsIlRhZyIsIlJlY29tbWVuZGVkIiwiTG9hZGluZyIsIkVycm9yU3RhdGUiLCJGT0NVU0FCTEUiLCJSb3ciLCJrIiwidiIsIl9jIiwiRGV0YWlsc0RyYXdlciIsIl9zIiwib3BlbklkIiwiY2xvc2VJZGVhIiwiYnVtcCIsInRvYXN0IiwidXNlciIsInJlZiIsInN0YXRlIiwiZ2V0SWRlYSIsInByZXYiLCJkb2N1bWVudCIsImFjdGl2ZUVsZW1lbnQiLCJjdXJyZW50IiwiZm9jdXMiLCJvbktleSIsImUiLCJrZXkiLCJzdG9wUHJvcGFnYXRpb24iLCJlbHMiLCJxdWVyeVNlbGVjdG9yQWxsIiwibGVuZ3RoIiwicHJldmVudERlZmF1bHQiLCJmaXJzdCIsImxhc3QiLCJzaGlmdEtleSIsImFkZEV2ZW50TGlzdGVuZXIiLCJyZW1vdmVFdmVudExpc3RlbmVyIiwiaWRlYSIsImRhdGEiLCJsb2FkaW5nIiwiZXJyb3IiLCJyZWxvYWQiLCJ1cGRhdGVkIiwic2V0RGF0YSIsIkRyYXdlckJvZHkiLCJvbkNoYW5nZWQiLCJzdGFmZiIsInJvaSIsImFubnVhbCIsImZpbmFuY2lhbEJlbmVmaXQiLCJiZW5lZml0UGVyaW9kIiwiaWQiLCJzdGF0dXMiLCJjYXRlZ29yeSIsInRpdGxlIiwic3VibWl0dGVyTmFtZSIsInN1Ym1pdHRlckVtYWlsIiwic3VibWl0dGVyVHlwZSIsImRlcHQiLCJtYW5hZ2VyIiwiY3JlYXRlZEF0IiwidGVjaG5vbG9neSIsInByb2JsZW0iLCJzb2x1dGlvbiIsImJlbmVmaXRUeXBlIiwiYmVuZWZpdERlc2NyaXB0aW9uIiwiaW52ZXN0bWVudCIsInRvTG93ZXJDYXNlIiwicGVyY2VudCIsInRvRml4ZWQiLCJvbmVUaW1lIiwicm9pQ29uZmlkZW5jZSIsImVmZm9ydCIsInN0YWNrIiwicGxhbiIsInNlbnNpdGl2ZSIsImNvbnNlbnQiLCJhc3NpZ25lZU5hbWUiLCJoaXN0b3J5IiwicmV2ZXJzZSIsIm1hcCIsImgiLCJ0Iiwid2hvIiwidGV4dCIsIl9jMyIsIlN1Ym1pdHRlclNlY3Rpb24iLCJfczIiLCJzZXRUZXh0IiwiYnVzeSIsInNldEJ1c3kiLCJlcnIiLCJzZXRFcnIiLCJzZW5kIiwidHJpbSIsInIiLCJzdWJtaXR0ZXJSZXBseSIsInJlYXNvbiIsInN0YWdlIiwicmVwbHkiLCJ0YXJnZXQiLCJ2YWx1ZSIsIlJldmlld2VyU2VjdGlvbiIsIl9zMyIsInJldmlld2VycyIsImxpc3RSZXZpZXdlcnMiLCJQcm9taXNlIiwicmVzb2x2ZSIsImFzc2lnbmVlIiwic2V0QXNzaWduZWUiLCJhc3NpZ25lZUlkIiwibm90ZSIsInNldE5vdGUiLCJzZXRTdGFnZSIsInNldFJlYXNvbiIsInciLCJzY29yZXMiLCJydW4iLCJmbiIsIm9rIiwic2NvcmUiLCJuIiwic2NvcmVJZGVhIiwiYXNzaWduIiwiYXNzaWduUmV2aWV3ZXIiLCJkZWNpZGUiLCJ0aGVuIiwibmFtZSIsImMiLCJsYWJlbCIsInMiLCJfYzIiLCJfYzQiLCJfYzUiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiRGV0YWlsc0RyYXdlci5qc3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IHVzZUVmZmVjdCwgdXNlUmVmLCB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IGFwaSB9IGZyb20gJy4uL2FwaS9pZGVhQXBpLmpzJztcbmltcG9ydCB7IGFzTWVzc2FnZSB9IGZyb20gJy4uL2FwaS9lcnJvcnMuanMnO1xuaW1wb3J0IHsgdXNlQXN5bmMgfSBmcm9tICcuLi9ob29rcy91c2VBc3luYy5qcyc7XG5pbXBvcnQgeyB1c2VDdXJyZW50VXNlciB9IGZyb20gJy4uL2hvb2tzL3VzZUN1cnJlbnRVc2VyLmpzeCc7XG5pbXBvcnQgeyB1c2VTcGFyayB9IGZyb20gJy4uL2hvb2tzL1NwYXJrQ29udGV4dC5qc3gnO1xuaW1wb3J0IHsgY2FuUmV2aWV3LCBjYW5Bc3NpZ24sIGNhblJlcGx5LCBjYW5WaWV3IH0gZnJvbSAnLi4vcGVybWlzc2lvbnMuanMnO1xuaW1wb3J0IHsgU0NPUklOR19DUklURVJJQSwgTkVYVF9TVEFHRVMsIFJFSkVDVElPTl9SRUFTT05TLCBFRkZPUlRfTEFCRUwsIExJTUlUUyB9IGZyb20gJy4uL2xvb2t1cHMuanMnO1xuaW1wb3J0IHsgYWxsU2NvcmVkLCB3ZWlnaHRlZFNjb3JlIH0gZnJvbSAnLi4vbGliL3Njb3JpbmcuanMnO1xuaW1wb3J0IHsgY29tcHV0ZVJvaSwgYW5udWFsQmVuZWZpdCwgaW5yIH0gZnJvbSAnLi4vbGliL3JvaS5qcyc7XG5pbXBvcnQgeyBmZGF0ZSB9IGZyb20gJy4uL2xpYi9kYXRlcy5qcyc7XG5pbXBvcnQgeyBQaWxsLCBUYWcsIFJlY29tbWVuZGVkLCBMb2FkaW5nLCBFcnJvclN0YXRlIH0gZnJvbSAnLi91aS5qc3gnO1xuXG5jb25zdCBGT0NVU0FCTEUgPSAnYVtocmVmXSxidXR0b246bm90KFtkaXNhYmxlZF0pLGlucHV0Om5vdChbZGlzYWJsZWRdKSxzZWxlY3Q6bm90KFtkaXNhYmxlZF0pLHRleHRhcmVhOm5vdChbZGlzYWJsZWRdKSxbdGFiaW5kZXhdOm5vdChbdGFiaW5kZXg9XCItMVwiXSknO1xuXG5jb25zdCBSb3cgPSAoeyBrLCB2IH0pID0+ICh2ID8gPD48ZHQ+e2t9PC9kdD48ZGQ+e3Z9PC9kZD48Lz4gOiBudWxsKTtcblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gRGV0YWlsc0RyYXdlcigpIHtcbiAgY29uc3QgeyBvcGVuSWQsIGNsb3NlSWRlYSwgYnVtcCwgdG9hc3QgfSA9IHVzZVNwYXJrKCk7XG4gIGNvbnN0IHVzZXIgPSB1c2VDdXJyZW50VXNlcigpO1xuICBjb25zdCByZWYgPSB1c2VSZWYobnVsbCk7XG4gIGNvbnN0IHN0YXRlID0gdXNlQXN5bmMoKCkgPT4gYXBpLmdldElkZWEob3BlbklkKSwgW29wZW5JZF0pO1xuXG4gIC8vIEZvY3VzIHRyYXAsIEVzY2FwZSB0byBjbG9zZSwgYW5kIGZvY3VzIHJldHVybnMgdG8gd2hlcmUgaXQgY2FtZSBmcm9tLlxuICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgIGNvbnN0IHByZXYgPSBkb2N1bWVudC5hY3RpdmVFbGVtZW50O1xuICAgIHJlZi5jdXJyZW50Py5mb2N1cygpO1xuICAgIGNvbnN0IG9uS2V5ID0gKGUpID0+IHtcbiAgICAgIGlmIChlLmtleSA9PT0gJ0VzY2FwZScpIHsgZS5zdG9wUHJvcGFnYXRpb24oKTsgY2xvc2VJZGVhKCk7IHJldHVybjsgfVxuICAgICAgaWYgKGUua2V5ICE9PSAnVGFiJyB8fCAhcmVmLmN1cnJlbnQpIHJldHVybjtcbiAgICAgIGNvbnN0IGVscyA9IFsuLi5yZWYuY3VycmVudC5xdWVyeVNlbGVjdG9yQWxsKEZPQ1VTQUJMRSldO1xuICAgICAgaWYgKCFlbHMubGVuZ3RoKSB7IGUucHJldmVudERlZmF1bHQoKTsgcmV0dXJuOyB9XG4gICAgICBjb25zdCBmaXJzdCA9IGVsc1swXTtcbiAgICAgIGNvbnN0IGxhc3QgPSBlbHNbZWxzLmxlbmd0aCAtIDFdO1xuICAgICAgaWYgKGUuc2hpZnRLZXkgJiYgKGRvY3VtZW50LmFjdGl2ZUVsZW1lbnQgPT09IGZpcnN0IHx8IGRvY3VtZW50LmFjdGl2ZUVsZW1lbnQgPT09IHJlZi5jdXJyZW50KSkgeyBlLnByZXZlbnREZWZhdWx0KCk7IGxhc3QuZm9jdXMoKTsgfVxuICAgICAgZWxzZSBpZiAoIWUuc2hpZnRLZXkgJiYgZG9jdW1lbnQuYWN0aXZlRWxlbWVudCA9PT0gbGFzdCkgeyBlLnByZXZlbnREZWZhdWx0KCk7IGZpcnN0LmZvY3VzKCk7IH1cbiAgICB9O1xuICAgIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ2tleWRvd24nLCBvbktleSwgdHJ1ZSk7XG4gICAgcmV0dXJuICgpID0+IHtcbiAgICAgIGRvY3VtZW50LnJlbW92ZUV2ZW50TGlzdGVuZXIoJ2tleWRvd24nLCBvbktleSwgdHJ1ZSk7XG4gICAgICBpZiAocHJldiAmJiBwcmV2LmZvY3VzKSBwcmV2LmZvY3VzKCk7XG4gICAgfTtcbiAgfSwgW2Nsb3NlSWRlYV0pO1xuXG4gIGNvbnN0IGlkZWEgPSBzdGF0ZS5kYXRhO1xuICByZXR1cm4gKFxuICAgIDw+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLXNjcmltXCIgb25DbGljaz17Y2xvc2VJZGVhfSBhcmlhLWhpZGRlbj1cInRydWVcIiAvPlxuICAgICAgPGFzaWRlIGNsYXNzTmFtZT1cInNwLWRyYXdlclwiIHJlZj17cmVmfSByb2xlPVwiZGlhbG9nXCIgYXJpYS1tb2RhbD1cInRydWVcIiBhcmlhLWxhYmVsPVwiSWRlYSBkZXRhaWxzXCIgdGFiSW5kZXg9ey0xfT5cbiAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9XCJzcC1idG4gc3AtZ2hvc3Qgc3Atc21hbGwgc3AteFwiIG9uQ2xpY2s9e2Nsb3NlSWRlYX0+Q2xvc2U8L2J1dHRvbj5cbiAgICAgICAge3N0YXRlLmxvYWRpbmcgJiYgIWlkZWEgJiYgPExvYWRpbmcgcm93cz17M30gbGFiZWw9XCJMb2FkaW5nIGlkZWFcIiAvPn1cbiAgICAgICAge3N0YXRlLmVycm9yICYmIDxFcnJvclN0YXRlIG1lc3NhZ2U9e3N0YXRlLmVycm9yfSBvblJldHJ5PXtzdGF0ZS5yZWxvYWR9IC8+fVxuICAgICAgICB7aWRlYSAmJiBjYW5WaWV3KHVzZXIsIGlkZWEpICYmIDxEcmF3ZXJCb2R5IGlkZWE9e2lkZWF9IHVzZXI9e3VzZXJ9IG9uQ2hhbmdlZD17KHVwZGF0ZWQpID0+IHsgaWYgKHVwZGF0ZWQpIHN0YXRlLnNldERhdGEodXBkYXRlZCk7IGJ1bXAoKTsgfX0gdG9hc3Q9e3RvYXN0fSAvPn1cbiAgICAgIDwvYXNpZGU+XG4gICAgPC8+XG4gICk7XG59XG5cbmZ1bmN0aW9uIERyYXdlckJvZHkoeyBpZGVhLCB1c2VyLCBvbkNoYW5nZWQsIHRvYXN0IH0pIHtcbiAgY29uc3Qgc3RhZmYgPSBjYW5SZXZpZXcodXNlciwgaWRlYSk7XG4gIGNvbnN0IHJvaSA9IGNvbXB1dGVSb2koaWRlYSk7XG4gIGNvbnN0IGFubnVhbCA9IGFubnVhbEJlbmVmaXQoaWRlYS5maW5hbmNpYWxCZW5lZml0LCBpZGVhLmJlbmVmaXRQZXJpb2QpO1xuICByZXR1cm4gKFxuICAgIDw+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLW1ldGFcIj48c3BhbiBjbGFzc05hbWU9XCJzcC1pZFwiPntpZGVhLmlkfTwvc3Bhbj48UGlsbCBzdGF0dXM9e2lkZWEuc3RhdHVzfSAvPjxUYWc+e2lkZWEuY2F0ZWdvcnl9PC9UYWc+PC9kaXY+XG4gICAgICA8aDI+e2lkZWEudGl0bGV9PC9oMj5cbiAgICAgIDxkbCBjbGFzc05hbWU9XCJzcC1kbFwiPlxuICAgICAgICA8Um93IGs9XCJTdWJtaXR0ZWQgYnlcIiB2PXtpZGVhLnN1Ym1pdHRlck5hbWV9IC8+XG4gICAgICAgIDxSb3cgaz1cIkVtYWlsXCIgdj17aWRlYS5zdWJtaXR0ZXJFbWFpbH0gLz5cbiAgICAgICAgPFJvdyBrPVwiU3VibWl0dGVyIHR5cGVcIiB2PXtpZGVhLnN1Ym1pdHRlclR5cGV9IC8+XG4gICAgICAgIDxSb3cgaz1cIkRlcGFydG1lbnRcIiB2PXtpZGVhLmRlcHR9IC8+XG4gICAgICAgIDxSb3cgaz1cIlJlcG9ydGluZyBtYW5hZ2VyXCIgdj17aWRlYS5tYW5hZ2VyfSAvPlxuICAgICAgICA8Um93IGs9XCJTdWJtaXR0ZWRcIiB2PXtmZGF0ZShpZGVhLmNyZWF0ZWRBdCl9IC8+XG4gICAgICAgIDxSb3cgaz1cIkNhdGVnb3J5XCIgdj17aWRlYS5jYXRlZ29yeX0gLz5cbiAgICAgICAgPFJvdyBrPVwiVGVjaG5vbG9neSBhcmVhXCIgdj17aWRlYS50ZWNobm9sb2d5fSAvPlxuICAgICAgICA8Um93IGs9XCJQcm9ibGVtXCIgdj17aWRlYS5wcm9ibGVtfSAvPlxuICAgICAgICA8Um93IGs9XCJTb2x1dGlvblwiIHY9e2lkZWEuc29sdXRpb259IC8+XG4gICAgICAgIDxSb3cgaz1cIkV4cGVjdGVkIHZhbHVlXCIgdj17aWRlYS5iZW5lZml0VHlwZX0gLz5cbiAgICAgICAgPFJvdyBrPVwiVmFsdWUgYXNzdW1wdGlvbnNcIiB2PXtpZGVhLmJlbmVmaXREZXNjcmlwdGlvbn0gLz5cbiAgICAgICAgPFJvdyBrPVwiRXN0aW1hdGVkIGludmVzdG1lbnRcIiB2PXtpZGVhLmludmVzdG1lbnQgIT0gbnVsbCA/IGlucihpZGVhLmludmVzdG1lbnQpIDogJyd9IC8+XG4gICAgICAgIDxSb3cgaz1cIkV4cGVjdGVkIGJlbmVmaXRcIiB2PXtpZGVhLmZpbmFuY2lhbEJlbmVmaXQgIT0gbnVsbCA/IGAke2lucihpZGVhLmZpbmFuY2lhbEJlbmVmaXQpfSAoJHtpZGVhLmJlbmVmaXRQZXJpb2QudG9Mb3dlckNhc2UoKX0pYCA6ICcnfSAvPlxuICAgICAgICA8Um93IGs9XCJZZWFybHkgYmVuZWZpdFwiIHY9e2FubnVhbCAhPSBudWxsICYmIGlkZWEuYmVuZWZpdFBlcmlvZCAhPT0gJ0FubnVhbCcgPyBgJHtpbnIoYW5udWFsKX0ke2lkZWEuYmVuZWZpdFBlcmlvZCA9PT0gJ09uZS10aW1lJyA/ICcgKGZpcnN0IHllYXIpJyA6ICcnfWAgOiAnJ30gLz5cbiAgICAgICAgPFJvdyBrPVwiSW5kaWNhdGl2ZSBST0lcIiB2PXtyb2kgPyBgJHtyb2kucGVyY2VudC50b0ZpeGVkKDEpfSUke3JvaS5vbmVUaW1lID8gJyAoZmlyc3QgeWVhciknIDogJyd9YCA6ICcnfSAvPlxuICAgICAgICA8Um93IGs9XCJFc3RpbWF0ZSBjb25maWRlbmNlXCIgdj17cm9pIHx8IGlkZWEuZmluYW5jaWFsQmVuZWZpdCAhPSBudWxsID8gaWRlYS5yb2lDb25maWRlbmNlIDogJyd9IC8+XG4gICAgICAgIDxSb3cgaz1cIkVmZm9ydFwiIHY9e0VGRk9SVF9MQUJFTFtpZGVhLmVmZm9ydF19IC8+XG4gICAgICAgIDxSb3cgaz1cIlRlY2ggc3RhY2tcIiB2PXtpZGVhLnN0YWNrfSAvPlxuICAgICAgICA8Um93IGs9XCJSb3VnaCBwbGFuXCIgdj17aWRlYS5wbGFufSAvPlxuICAgICAgICA8Um93IGs9XCJTZW5zaXRpdmUgZGF0YVwiIHY9e2lkZWEuc2Vuc2l0aXZlfSAvPlxuICAgICAgICA8Um93IGs9XCJDcmVkaXQgb24gc29sdXRpb24gcGFnZVwiIHY9e2lkZWEuY29uc2VudCA/ICdTdWJtaXR0ZXIgYWdyZWVkIHRvIHNob3cgdGhlaXIgbmFtZScgOiAnJ30gLz5cbiAgICAgICAgPFJvdyBrPVwiUmV2aWV3ZXJcIiB2PXtpZGVhLmFzc2lnbmVlTmFtZX0gLz5cbiAgICAgIDwvZGw+XG5cbiAgICAgIHshc3RhZmYgJiYgPFN1Ym1pdHRlclNlY3Rpb24gaWRlYT17aWRlYX0gdXNlcj17dXNlcn0gb25DaGFuZ2VkPXtvbkNoYW5nZWR9IHRvYXN0PXt0b2FzdH0gLz59XG4gICAgICB7c3RhZmYgJiYgPFJldmlld2VyU2VjdGlvbiBpZGVhPXtpZGVhfSB1c2VyPXt1c2VyfSBvbkNoYW5nZWQ9e29uQ2hhbmdlZH0gdG9hc3Q9e3RvYXN0fSAvPn1cblxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcC1zZWN0XCI+XG4gICAgICAgIDxoMz5IaXN0b3J5PC9oMz5cbiAgICAgICAgPHVsIGNsYXNzTmFtZT1cInNwLWhpc3RcIj5cbiAgICAgICAgICB7Wy4uLmlkZWEuaGlzdG9yeV0ucmV2ZXJzZSgpLm1hcCgoaCwgaykgPT4gKFxuICAgICAgICAgICAgPGxpIGtleT17a30+PHNtYWxsPntmZGF0ZShoLnQpfSDCtyB7aC53aG99PC9zbWFsbD48YnIgLz57aC50ZXh0fTwvbGk+XG4gICAgICAgICAgKSl9XG4gICAgICAgIDwvdWw+XG4gICAgICA8L2Rpdj5cbiAgICA8Lz5cbiAgKTtcbn1cblxuZnVuY3Rpb24gU3VibWl0dGVyU2VjdGlvbih7IGlkZWEsIHVzZXIsIG9uQ2hhbmdlZCwgdG9hc3QgfSkge1xuICBjb25zdCBbdGV4dCwgc2V0VGV4dF0gPSB1c2VTdGF0ZSgnJyk7XG4gIGNvbnN0IFtidXN5LCBzZXRCdXN5XSA9IHVzZVN0YXRlKGZhbHNlKTtcbiAgY29uc3QgW2Vyciwgc2V0RXJyXSA9IHVzZVN0YXRlKCcnKTtcbiAgY29uc3Qgc2VuZCA9IGFzeW5jICgpID0+IHtcbiAgICBpZiAoIXRleHQudHJpbSgpKSB7IHNldEVycignV3JpdGUgYSByZXBseSBiZWZvcmUgc2VuZGluZy4nKTsgcmV0dXJuOyB9XG4gICAgc2V0QnVzeSh0cnVlKTsgc2V0RXJyKCcnKTtcbiAgICB0cnkgeyBjb25zdCByID0gYXdhaXQgYXBpLnN1Ym1pdHRlclJlcGx5KGlkZWEuaWQsIHRleHQpOyB0b2FzdCgnUmVwbHkgc2VudCB0byB0aGUgcmV2aWV3ZXIuJyk7IHNldFRleHQoJycpOyBvbkNoYW5nZWQocik7IH1cbiAgICBjYXRjaCAoZSkgeyBzZXRFcnIoYXNNZXNzYWdlKGUpKTsgfVxuICAgIHNldEJ1c3koZmFsc2UpO1xuICB9O1xuICByZXR1cm4gKFxuICAgIDw+XG4gICAgICB7aWRlYS5zdGF0dXMgPT09ICdSZWplY3RlZCcgJiYgPGRpdiBjbGFzc05hbWU9XCJzcC1zZWN0XCI+PGgzPkRlY2lzaW9uPC9oMz48cD5SZWplY3RlZDoge2lkZWEucmVhc29ufS4gVGhlIGhpc3RvcnkgYmVsb3cgaGFzIHRoZSByZXZpZXdlcuKAmXMgbm90ZS48L3A+PC9kaXY+fVxuICAgICAge2lkZWEuc3RhZ2UgJiYgPGRpdiBjbGFzc05hbWU9XCJzcC1zZWN0XCI+PGgzPk5leHQgc3RhZ2U8L2gzPjxwPntpZGVhLnN0YWdlfTwvcD48L2Rpdj59XG4gICAgICB7Y2FuUmVwbHkodXNlciwgaWRlYSkgJiYgKFxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLXNlY3RcIj5cbiAgICAgICAgICA8aDM+UmVwbHkgdG8gcmV2aWV3ZXI8L2gzPlxuICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInNwLWhpbnRcIj5BbnN3ZXIgdGhlIHJldmlld2Vy4oCZcyBxdWVzdGlvbiBoZXJlLiBZb3VyIHJlcGx5IGlzIGFkZGVkIHRvIHRoZSBpZGVhIGhpc3RvcnkgYW5kIHRoZSBpZGVhIHJldHVybnMgdG8gcmV2aWV3LjwvcD5cbiAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwic3Atc3JcIiBodG1sRm9yPVwiZC1yZXBseVwiPllvdXIgcmVwbHk8L2xhYmVsPlxuICAgICAgICAgIDx0ZXh0YXJlYSBpZD1cImQtcmVwbHlcIiBtYXhMZW5ndGg9e0xJTUlUUy5yZXBseX0gdmFsdWU9e3RleHR9IG9uQ2hhbmdlPXsoZSkgPT4gc2V0VGV4dChlLnRhcmdldC52YWx1ZSl9IHBsYWNlaG9sZGVyPVwiV3JpdGUgeW91ciByZXNwb25zZeKAplwiIC8+XG4gICAgICAgICAge2VyciAmJiA8ZGl2IGNsYXNzTmFtZT1cInNwLWVyclwiIHJvbGU9XCJhbGVydFwiPntlcnJ9PC9kaXY+fVxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3AtYWN0aW9uc1wiPjxidXR0b24gY2xhc3NOYW1lPVwic3AtYnRuIHNwLXNtYWxsXCIgZGlzYWJsZWQ9e2J1c3l9IG9uQ2xpY2s9e3NlbmR9PntidXN5ID8gJ1NlbmRpbmfigKYnIDogJ1NlbmQgcmVwbHknfTwvYnV0dG9uPjwvZGl2PlxuICAgICAgICA8L2Rpdj5cbiAgICAgICl9XG4gICAgPC8+XG4gICk7XG59XG5cbmZ1bmN0aW9uIFJldmlld2VyU2VjdGlvbih7IGlkZWEsIHVzZXIsIG9uQ2hhbmdlZCwgdG9hc3QgfSkge1xuICBjb25zdCByZXZpZXdlcnMgPSB1c2VBc3luYygoKSA9PiAoY2FuQXNzaWduKHVzZXIpID8gYXBpLmxpc3RSZXZpZXdlcnMoKSA6IFByb21pc2UucmVzb2x2ZShbXSkpLCBbdXNlcj8uaWRdKTtcbiAgY29uc3QgW2Fzc2lnbmVlLCBzZXRBc3NpZ25lZV0gPSB1c2VTdGF0ZShpZGVhLmFzc2lnbmVlSWQgfHwgJycpO1xuICBjb25zdCBbbm90ZSwgc2V0Tm90ZV0gPSB1c2VTdGF0ZSgnJyk7XG4gIGNvbnN0IFtzdGFnZSwgc2V0U3RhZ2VdID0gdXNlU3RhdGUoJycpO1xuICBjb25zdCBbcmVhc29uLCBzZXRSZWFzb25dID0gdXNlU3RhdGUoJycpO1xuICBjb25zdCBbZXJyLCBzZXRFcnJdID0gdXNlU3RhdGUoJycpO1xuICBjb25zdCBbYnVzeSwgc2V0QnVzeV0gPSB1c2VTdGF0ZShmYWxzZSk7XG4gIGNvbnN0IHcgPSB3ZWlnaHRlZFNjb3JlKGlkZWEuc2NvcmVzKTtcblxuICBjb25zdCBydW4gPSBhc3luYyAoZm4sIG9rKSA9PiB7XG4gICAgc2V0QnVzeSh0cnVlKTsgc2V0RXJyKCcnKTtcbiAgICB0cnkgeyBjb25zdCByID0gYXdhaXQgZm4oKTsgaWYgKG9rKSB0b2FzdChvayk7IG9uQ2hhbmdlZChyKTsgfVxuICAgIGNhdGNoIChlKSB7IHNldEVycihhc01lc3NhZ2UoZSkpOyB9XG4gICAgc2V0QnVzeShmYWxzZSk7XG4gIH07XG4gIGNvbnN0IHNjb3JlID0gKGtleSwgbikgPT4gcnVuKCgpID0+IGFwaS5zY29yZUlkZWEoaWRlYS5pZCwga2V5LCBuKSk7XG4gIGNvbnN0IGFzc2lnbiA9ICgpID0+IHJ1bigoKSA9PiBhcGkuYXNzaWduUmV2aWV3ZXIoaWRlYS5pZCwgYXNzaWduZWUpLCAnUmV2aWV3ZXIgc2F2ZWQuJyk7XG4gIGNvbnN0IGRlY2lkZSA9IChzdGF0dXMpID0+IHtcbiAgICAvLyBTYW1lIGNoZWNrcyB0aGUgc2VydmVyIG1ha2VzLCBzbyBwZW9wbGUgZ2V0IHRoZSBtZXNzYWdlIHN0cmFpZ2h0IGF3YXkuXG4gICAgaWYgKHN0YXR1cyA9PT0gJ0FwcHJvdmVkJykge1xuICAgICAgaWYgKCFhbGxTY29yZWQoaWRlYS5zY29yZXMpKSByZXR1cm4gc2V0RXJyKCdTY29yZSBldmVyeSBjcml0ZXJpb24gYmVmb3JlIGFwcHJvdmluZy4nKTtcbiAgICAgIGlmICghc3RhZ2UpIHJldHVybiBzZXRFcnIoJ0Nob29zZSB0aGUgbmV4dCBzdGFnZSBmb3IgdGhpcyBpZGVhLicpO1xuICAgIH1cbiAgICBpZiAoc3RhdHVzID09PSAnUmVqZWN0ZWQnKSB7XG4gICAgICBpZiAoIXJlYXNvbikgcmV0dXJuIHNldEVycignQ2hvb3NlIGEgcmVhc29uIGZvciByZWplY3RpbmcuJyk7XG4gICAgICBpZiAoIW5vdGUudHJpbSgpKSByZXR1cm4gc2V0RXJyKCdBZGQgYSBzaG9ydCBub3RlIHNvIHRoZSBzdWJtaXR0ZXIgdW5kZXJzdGFuZHMgdGhlIGRlY2lzaW9uLicpO1xuICAgIH1cbiAgICBpZiAoc3RhdHVzID09PSAnTmVlZHMgaW5mbycgJiYgIW5vdGUudHJpbSgpKSByZXR1cm4gc2V0RXJyKCdXcml0ZSB0aGUgcXVlc3Rpb24geW91IG5lZWQgYW5zd2VyZWQuJyk7XG4gICAgcmV0dXJuIHJ1bigoKSA9PiBhcGkuZGVjaWRlKGlkZWEuaWQsIHsgc3RhdHVzLCBub3RlLCBzdGFnZSwgcmVhc29uIH0pLCBgJHtpZGVhLmlkfSB1cGRhdGVkIHRvICR7c3RhdHVzfS5gKS50aGVuKCgpID0+IHNldE5vdGUoJycpKTtcbiAgfTtcblxuICByZXR1cm4gKFxuICAgIDw+XG4gICAgICB7Y2FuQXNzaWduKHVzZXIpICYmIChcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcC1zZWN0XCI+XG4gICAgICAgICAgPGgzPlJldmlld2VyPC9oMz5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLWFzc2lnblwiPlxuICAgICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT1cInNwLXNyXCIgaHRtbEZvcj1cImQtYXNzaWduXCI+QXNzaWduIHJldmlld2VyPC9sYWJlbD5cbiAgICAgICAgICAgIDxzZWxlY3QgaWQ9XCJkLWFzc2lnblwiIHZhbHVlPXthc3NpZ25lZX0gb25DaGFuZ2U9eyhlKSA9PiBzZXRBc3NpZ25lZShlLnRhcmdldC52YWx1ZSl9PlxuICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiXCI+VW5hc3NpZ25lZDwvb3B0aW9uPlxuICAgICAgICAgICAgICB7KHJldmlld2Vycy5kYXRhIHx8IFtdKS5tYXAoKHIpID0+IDxvcHRpb24ga2V5PXtyLmlkfSB2YWx1ZT17ci5pZH0+e3IubmFtZX08L29wdGlvbj4pfVxuICAgICAgICAgICAgPC9zZWxlY3Q+XG4gICAgICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT1cInNwLWJ0biBzcC1naG9zdCBzcC1zbWFsbFwiIGRpc2FibGVkPXtidXN5fSBvbkNsaWNrPXthc3NpZ259PlNhdmUgcmV2aWV3ZXI8L2J1dHRvbj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICApfVxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcC1zZWN0XCI+XG4gICAgICAgIDxoMz5TY29yZTwvaDM+XG4gICAgICAgIHtTQ09SSU5HX0NSSVRFUklBLm1hcCgoYykgPT4gKFxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3Atc2NvcmVcIiBrZXk9e2Mua2V5fT5cbiAgICAgICAgICAgIDxzcGFuPntjLmxhYmVsfTwvc3Bhbj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3AtZG90c1wiIHJvbGU9XCJncm91cFwiIGFyaWEtbGFiZWw9e2MubGFiZWx9PlxuICAgICAgICAgICAgICB7WzEsIDIsIDMsIDQsIDVdLm1hcCgobikgPT4gKFxuICAgICAgICAgICAgICAgIDxidXR0b24ga2V5PXtufSBkaXNhYmxlZD17YnVzeX0gYXJpYS1wcmVzc2VkPXtpZGVhLnNjb3Jlc1tjLmtleV0gPT09IG59IGFyaWEtbGFiZWw9e2Ake2MubGFiZWx9OiAke259IG91dCBvZiA1YH0gb25DbGljaz17KCkgPT4gc2NvcmUoYy5rZXksIG4pfT57bn08L2J1dHRvbj5cbiAgICAgICAgICAgICAgKSl9XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKSl9XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3Atc2NvcmVcIj5cbiAgICAgICAgICA8c3Bhbj5PdmVyYWxsIDxSZWNvbW1lbmRlZCBzY29yZXM9e2lkZWEuc2NvcmVzfSAvPjwvc3Bhbj5cbiAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJzcC10b3RhbFwiPnt3ID8gYCR7dy50b0ZpeGVkKDEpfSAvIDVgIDogJ05vdCBzY29yZWQnfTwvc3Bhbj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3Atc2VjdFwiPlxuICAgICAgICA8aDM+RGVjaXNpb248L2gzPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLWZpZWxkXCI+XG4gICAgICAgICAgPGxhYmVsIGh0bWxGb3I9XCJkLW5vdGVcIj5Ob3RlIHRvIHRoZSBzdWJtaXR0ZXI8L2xhYmVsPlxuICAgICAgICAgIDx0ZXh0YXJlYSBpZD1cImQtbm90ZVwiIG1heExlbmd0aD17TElNSVRTLm5vdGV9IHZhbHVlPXtub3RlfSBvbkNoYW5nZT17KGUpID0+IHNldE5vdGUoZS50YXJnZXQudmFsdWUpfSBwbGFjZWhvbGRlcj1cIlJlcXVpcmVkIHdoZW4geW91IHJlamVjdCBvciBhc2sgZm9yIG1vcmUgaW5mb3JtYXRpb25cIiAvPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcC1yb3cyXCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcC1maWVsZFwiPlxuICAgICAgICAgICAgPGxhYmVsIGh0bWxGb3I9XCJkLXN0YWdlXCI+TmV4dCBzdGFnZSBpZiBhcHByb3ZlZDwvbGFiZWw+XG4gICAgICAgICAgICA8c2VsZWN0IGlkPVwiZC1zdGFnZVwiIHZhbHVlPXtzdGFnZX0gb25DaGFuZ2U9eyhlKSA9PiBzZXRTdGFnZShlLnRhcmdldC52YWx1ZSl9PlxuICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiXCI+Q2hvb3NlIGEgc3RhZ2U8L29wdGlvbj5cbiAgICAgICAgICAgICAge05FWFRfU1RBR0VTLm1hcCgocykgPT4gPG9wdGlvbiBrZXk9e3N9PntzfTwvb3B0aW9uPil9XG4gICAgICAgICAgICA8L3NlbGVjdD5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLWZpZWxkXCI+XG4gICAgICAgICAgICA8bGFiZWwgaHRtbEZvcj1cImQtcmVhc29uXCI+UmVhc29uIGlmIHJlamVjdGVkPC9sYWJlbD5cbiAgICAgICAgICAgIDxzZWxlY3QgaWQ9XCJkLXJlYXNvblwiIHZhbHVlPXtyZWFzb259IG9uQ2hhbmdlPXsoZSkgPT4gc2V0UmVhc29uKGUudGFyZ2V0LnZhbHVlKX0+XG4gICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJcIj5DaG9vc2UgYSByZWFzb248L29wdGlvbj5cbiAgICAgICAgICAgICAge1JFSkVDVElPTl9SRUFTT05TLm1hcCgocykgPT4gPG9wdGlvbiBrZXk9e3N9PntzfTwvb3B0aW9uPil9XG4gICAgICAgICAgICA8L3NlbGVjdD5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3AtYWN0aW9uc1wiPlxuICAgICAgICAgIDxidXR0b24gY2xhc3NOYW1lPVwic3AtYnRuIHNwLXNtYWxsXCIgZGlzYWJsZWQ9e2J1c3l9IG9uQ2xpY2s9eygpID0+IGRlY2lkZSgnQXBwcm92ZWQnKX0+QXBwcm92ZTwvYnV0dG9uPlxuICAgICAgICAgIDxidXR0b24gY2xhc3NOYW1lPVwic3AtYnRuIHNwLWdob3N0IHNwLXNtYWxsXCIgZGlzYWJsZWQ9e2J1c3l9IG9uQ2xpY2s9eygpID0+IGRlY2lkZSgnVW5kZXIgcmV2aWV3Jyl9PlN0YXJ0IHJldmlldzwvYnV0dG9uPlxuICAgICAgICAgIDxidXR0b24gY2xhc3NOYW1lPVwic3AtYnRuIHNwLWdob3N0IHNwLXNtYWxsXCIgZGlzYWJsZWQ9e2J1c3l9IG9uQ2xpY2s9eygpID0+IGRlY2lkZSgnTmVlZHMgaW5mbycpfT5Bc2sgZm9yIG1vcmUgaW5mbzwvYnV0dG9uPlxuICAgICAgICAgIDxidXR0b24gY2xhc3NOYW1lPVwic3AtYnRuIHNwLWdob3N0IHNwLXNtYWxsXCIgZGlzYWJsZWQ9e2J1c3l9IG9uQ2xpY2s9eygpID0+IGRlY2lkZSgnUGFya2VkJyl9PlBhcms8L2J1dHRvbj5cbiAgICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT1cInNwLWJ0biBzcC13YXJuIHNwLXNtYWxsXCIgZGlzYWJsZWQ9e2J1c3l9IG9uQ2xpY2s9eygpID0+IGRlY2lkZSgnUmVqZWN0ZWQnKX0+UmVqZWN0PC9idXR0b24+XG4gICAgICAgICAge2lkZWEuc3RhdHVzID09PSAnQXBwcm92ZWQnICYmIDxidXR0b24gY2xhc3NOYW1lPVwic3AtYnRuIHNwLWdob3N0IHNwLXNtYWxsXCIgZGlzYWJsZWQ9e2J1c3l9IG9uQ2xpY2s9eygpID0+IGRlY2lkZSgnSW4gYnVpbGQnKX0+TW92ZSB0byBidWlsZDwvYnV0dG9uPn1cbiAgICAgICAgICB7aWRlYS5zdGF0dXMgPT09ICdJbiBidWlsZCcgJiYgPGJ1dHRvbiBjbGFzc05hbWU9XCJzcC1idG4gc3AtZ2hvc3Qgc3Atc21hbGxcIiBkaXNhYmxlZD17YnVzeX0gb25DbGljaz17KCkgPT4gZGVjaWRlKCdEZWxpdmVyZWQnKX0+TWFyayBkZWxpdmVyZWQ8L2J1dHRvbj59XG4gICAgICAgIDwvZGl2PlxuICAgICAgICB7ZXJyICYmIDxkaXYgY2xhc3NOYW1lPVwic3AtZXJyXCIgcm9sZT1cImFsZXJ0XCI+e2Vycn08L2Rpdj59XG4gICAgICA8L2Rpdj5cbiAgICA8Lz5cbiAgKTtcbn1cbiJdLCJmaWxlIjoiRDovRG93bmxvYWRzL1NwYXJrX3Byb3RvdHlwZV9wcm9qZWN0L3NwYXJrLXByb3RvdHlwZS9zcmMvaWRlYWNlbnRlci9jb21wb25lbnRzL0RldGFpbHNEcmF3ZXIuanN4In0=

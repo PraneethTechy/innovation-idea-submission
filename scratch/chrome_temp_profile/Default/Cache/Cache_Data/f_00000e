@@ -1,0 +1,162 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/ideacenter/pages/IdeasPage.jsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=093d1749"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+let prevRefreshReg;
+let prevRefreshSig;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  prevRefreshReg = window.$RefreshReg$;
+  prevRefreshSig = window.$RefreshSig$;
+  window.$RefreshReg$ = RefreshRuntime.getRefreshReg("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx");
+  window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
+}
+var _s = $RefreshSig$();
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=093d1749"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react; const useEffect = __vite__cjsImport3_react["useEffect"]; const useState = __vite__cjsImport3_react["useState"];
+import { api } from "/src/ideacenter/api/ideaApi.js?t=1791624950569";
+import { asMessage } from "/src/ideacenter/api/errors.js";
+import { useAsync } from "/src/ideacenter/hooks/useAsync.js";
+import { useCurrentUser } from "/src/ideacenter/hooks/useCurrentUser.jsx?t=1791624950569";
+import { useSpark } from "/src/ideacenter/hooks/SparkContext.jsx";
+import { navigate } from "/src/ideacenter/hooks/useNav.jsx?t=1791611849021";
+import { REPLY_SLA_DAYS, LIMITS } from "/src/ideacenter/lookups.js";
+import { canVote } from "/src/ideacenter/permissions.js";
+import FilterBar, { EMPTY_FILTERS } from "/src/ideacenter/components/FilterBar.jsx";
+import IdeaCard from "/src/ideacenter/components/IdeaCard.jsx";
+import { AsyncView } from "/src/ideacenter/components/ui.jsx";
+export default function IdeasPage() {
+  _s();
+  const user = useCurrentUser();
+  const { openIdea, toast, version } = useSpark();
+  const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const [quick, setQuick] = useState("");
+  const [overrides, setOverrides] = useState({});
+  const state = useAsync(() => api.listIdeas(filters), [filters, version]);
+  useEffect(() => {
+    setOverrides({});
+  }, [state.data]);
+  const vote = async (idea) => {
+    const before = { votedByMe: idea.votedByMe, voteCount: idea.voteCount };
+    const next = { votedByMe: !before.votedByMe, voteCount: before.voteCount + (before.votedByMe ? -1 : 1) };
+    setOverrides((o) => ({ ...o, [idea.id]: next }));
+    try {
+      const r = await api.toggleVote(idea.id);
+      setOverrides((o) => ({ ...o, [idea.id]: r }));
+    } catch (e) {
+      setOverrides((o) => ({ ...o, [idea.id]: before }));
+      toast(`Your vote did not save. ${asMessage(e)}`);
+    }
+  };
+  const go = () => navigate("/employee/submit", { draftTitle: quick });
+  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-pagehead", children: /* @__PURE__ */ jsxDEV("div", { children: [
+      /* @__PURE__ */ jsxDEV("h1", { children: "Ideas from across GWC" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+        lineNumber: 59,
+        columnNumber: 14
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { children: [
+        "Back the ideas you want to see built. Every idea gets a reply within ",
+        REPLY_SLA_DAYS,
+        " days."
+      ] }, void 0, true, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+        lineNumber: 59,
+        columnNumber: 44
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+      lineNumber: 59,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+      lineNumber: 58,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "sp-startbar", children: [
+      /* @__PURE__ */ jsxDEV("label", { htmlFor: "sp-quick", children: "Have an idea?" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+        lineNumber: 62,
+        columnNumber: 9
+      }, this),
+      /* @__PURE__ */ jsxDEV(
+        "input",
+        {
+          id: "sp-quick",
+          type: "text",
+          maxLength: LIMITS.title,
+          value: quick,
+          onChange: (e) => setQuick(e.target.value),
+          onKeyDown: (e) => e.key === "Enter" && go(),
+          placeholder: "Start with a title, for example “Auto-draft proposals from workshop notes”"
+        },
+        void 0,
+        false,
+        {
+          fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+          lineNumber: 63,
+          columnNumber: 9
+        },
+        this
+      ),
+      /* @__PURE__ */ jsxDEV("button", { className: "sp-btn", onClick: go, children: "Add details" }, void 0, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+        lineNumber: 65,
+        columnNumber: 9
+      }, this)
+    ] }, void 0, true, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+      lineNumber: 61,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(FilterBar, { value: filters, onChange: setFilters }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+      lineNumber: 67,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(AsyncView, { state, isEmpty: (d) => d.length === 0, empty: "No ideas match these filters. Clear a filter or submit the first one.", children: (list) => /* @__PURE__ */ jsxDEV("div", { className: "sp-feed", children: list.map(
+      (i) => /* @__PURE__ */ jsxDEV(IdeaCard, { idea: { ...i, ...overrides[i.id] }, onOpen: openIdea, onVote: canVote(user) ? vote : void 0 }, i.id, false, {
+        fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+        lineNumber: 72,
+        columnNumber: 11
+      }, this)
+    ) }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+      lineNumber: 70,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+      lineNumber: 68,
+      columnNumber: 7
+    }, this)
+  ] }, void 0, true, {
+    fileName: "D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx",
+    lineNumber: 57,
+    columnNumber: 5
+  }, this);
+}
+_s(IdeasPage, "IKm4214cRgnE4Vn6jyab4CV/oW0=", false, function() {
+  return [useCurrentUser, useSpark, useAsync];
+});
+_c = IdeasPage;
+var _c;
+$RefreshReg$(_c, "IdeasPage");
+if (import.meta.hot && !inWebWorker) {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+if (import.meta.hot && !inWebWorker) {
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("D:/Downloads/Spark_prototype_project/spark-prototype/src/ideacenter/pages/IdeasPage.jsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUFXLENBQUNMLE1BQU1BLEVBQUVNLFFBQVEsV0FBV0wsR0FBRztBQUFBLFVBQUcsYUFBWTtBQUFBO0FBQUEsUUFEM0Q7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLE1BQ3VJO0FBQUEsTUFDdkksdUJBQUMsWUFBTyxXQUFVLFVBQVMsU0FBU0EsSUFBSSwyQkFBeEM7QUFBQTtBQUFBO0FBQUE7QUFBQSxhQUFtRDtBQUFBLFNBSnJEO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0FLQTtBQUFBLElBQ0EsdUJBQUMsYUFBVSxPQUFPcEIsU0FBUyxVQUFVQyxjQUFyQztBQUFBO0FBQUE7QUFBQTtBQUFBLFdBQWdEO0FBQUEsSUFDaEQsdUJBQUMsYUFBVSxPQUFjLFNBQVMsQ0FBQ3lCLE1BQU1BLEVBQUVDLFdBQVcsR0FBRyxPQUFNLHlFQUM1RCxXQUFDQyxTQUNBLHVCQUFDLFNBQUksV0FBVSxXQUNaQSxlQUFLQztBQUFBQSxNQUFJLENBQUNDLE1BQ1QsdUJBQUMsWUFBb0IsTUFBTSxFQUFFLEdBQUdBLEdBQUcsR0FBRzFCLFVBQVUwQixFQUFFZCxFQUFFLEVBQUUsR0FBRyxRQUFRbkIsVUFBVSxRQUFRUixRQUFRTyxJQUFJLElBQUlhLE9BQU9zQixVQUEzRkQsRUFBRWQsSUFBakI7QUFBQTtBQUFBO0FBQUE7QUFBQSxhQUFvSDtBQUFBLElBQ3JILEtBSEg7QUFBQTtBQUFBO0FBQUE7QUFBQSxXQUlBLEtBTko7QUFBQTtBQUFBO0FBQUE7QUFBQSxXQVFBO0FBQUEsT0FuQkY7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQW9CQTtBQUVKO0FBQUNyQixHQTlDdUJELFdBQVM7QUFBQSxVQUNsQlYsZ0JBQ3dCQyxVQUl2QkYsUUFBUTtBQUFBO0FBQUEsS0FOQVc7QUFBUyxJQUFBc0M7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsiUmVhY3QiLCJ1c2VFZmZlY3QiLCJ1c2VTdGF0ZSIsImFwaSIsImFzTWVzc2FnZSIsInVzZUFzeW5jIiwidXNlQ3VycmVudFVzZXIiLCJ1c2VTcGFyayIsIm5hdmlnYXRlIiwiUkVQTFlfU0xBX0RBWVMiLCJMSU1JVFMiLCJjYW5Wb3RlIiwiRmlsdGVyQmFyIiwiRU1QVFlfRklMVEVSUyIsIklkZWFDYXJkIiwiQXN5bmNWaWV3IiwiSWRlYXNQYWdlIiwiX3MiLCJ1c2VyIiwib3BlbklkZWEiLCJ0b2FzdCIsInZlcnNpb24iLCJmaWx0ZXJzIiwic2V0RmlsdGVycyIsInF1aWNrIiwic2V0UXVpY2siLCJvdmVycmlkZXMiLCJzZXRPdmVycmlkZXMiLCJzdGF0ZSIsImxpc3RJZGVhcyIsImRhdGEiLCJ2b3RlIiwiaWRlYSIsImJlZm9yZSIsInZvdGVkQnlNZSIsInZvdGVDb3VudCIsIm5leHQiLCJvIiwiaWQiLCJyIiwidG9nZ2xlVm90ZSIsImUiLCJnbyIsImRyYWZ0VGl0bGUiLCJ0aXRsZSIsInRhcmdldCIsInZhbHVlIiwia2V5IiwiZCIsImxlbmd0aCIsImxpc3QiLCJtYXAiLCJpIiwidW5kZWZpbmVkIiwiX2MiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiSWRlYXNQYWdlLmpzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgdXNlRWZmZWN0LCB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IGFwaSB9IGZyb20gJy4uL2FwaS9pZGVhQXBpLmpzJztcbmltcG9ydCB7IGFzTWVzc2FnZSB9IGZyb20gJy4uL2FwaS9lcnJvcnMuanMnO1xuaW1wb3J0IHsgdXNlQXN5bmMgfSBmcm9tICcuLi9ob29rcy91c2VBc3luYy5qcyc7XG5pbXBvcnQgeyB1c2VDdXJyZW50VXNlciB9IGZyb20gJy4uL2hvb2tzL3VzZUN1cnJlbnRVc2VyLmpzeCc7XG5pbXBvcnQgeyB1c2VTcGFyayB9IGZyb20gJy4uL2hvb2tzL1NwYXJrQ29udGV4dC5qc3gnO1xuaW1wb3J0IHsgbmF2aWdhdGUgfSBmcm9tICcuLi9ob29rcy91c2VOYXYuanN4JztcbmltcG9ydCB7IFJFUExZX1NMQV9EQVlTLCBMSU1JVFMgfSBmcm9tICcuLi9sb29rdXBzLmpzJztcbmltcG9ydCB7IGNhblZvdGUgfSBmcm9tICcuLi9wZXJtaXNzaW9ucy5qcyc7XG5pbXBvcnQgRmlsdGVyQmFyLCB7IEVNUFRZX0ZJTFRFUlMgfSBmcm9tICcuLi9jb21wb25lbnRzL0ZpbHRlckJhci5qc3gnO1xuaW1wb3J0IElkZWFDYXJkIGZyb20gJy4uL2NvbXBvbmVudHMvSWRlYUNhcmQuanN4JztcbmltcG9ydCB7IEFzeW5jVmlldyB9IGZyb20gJy4uL2NvbXBvbmVudHMvdWkuanN4JztcblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gSWRlYXNQYWdlKCkge1xuICBjb25zdCB1c2VyID0gdXNlQ3VycmVudFVzZXIoKTtcbiAgY29uc3QgeyBvcGVuSWRlYSwgdG9hc3QsIHZlcnNpb24gfSA9IHVzZVNwYXJrKCk7XG4gIGNvbnN0IFtmaWx0ZXJzLCBzZXRGaWx0ZXJzXSA9IHVzZVN0YXRlKEVNUFRZX0ZJTFRFUlMpO1xuICBjb25zdCBbcXVpY2ssIHNldFF1aWNrXSA9IHVzZVN0YXRlKCcnKTtcbiAgY29uc3QgW292ZXJyaWRlcywgc2V0T3ZlcnJpZGVzXSA9IHVzZVN0YXRlKHt9KTsgLy8gb3B0aW1pc3RpYyB2b3RlIGNoYW5nZXMsIHJvbGxlZCBiYWNrIG9uIGZhaWx1cmVcbiAgY29uc3Qgc3RhdGUgPSB1c2VBc3luYygoKSA9PiBhcGkubGlzdElkZWFzKGZpbHRlcnMpLCBbZmlsdGVycywgdmVyc2lvbl0pO1xuICB1c2VFZmZlY3QoKCkgPT4geyBzZXRPdmVycmlkZXMoe30pOyB9LCBbc3RhdGUuZGF0YV0pO1xuXG4gIGNvbnN0IHZvdGUgPSBhc3luYyAoaWRlYSkgPT4ge1xuICAgIGNvbnN0IGJlZm9yZSA9IHsgdm90ZWRCeU1lOiBpZGVhLnZvdGVkQnlNZSwgdm90ZUNvdW50OiBpZGVhLnZvdGVDb3VudCB9O1xuICAgIGNvbnN0IG5leHQgPSB7IHZvdGVkQnlNZTogIWJlZm9yZS52b3RlZEJ5TWUsIHZvdGVDb3VudDogYmVmb3JlLnZvdGVDb3VudCArIChiZWZvcmUudm90ZWRCeU1lID8gLTEgOiAxKSB9O1xuICAgIHNldE92ZXJyaWRlcygobykgPT4gKHsgLi4ubywgW2lkZWEuaWRdOiBuZXh0IH0pKTsgLy8gdXBkYXRlIGF0IG9uY2VcbiAgICB0cnkge1xuICAgICAgY29uc3QgciA9IGF3YWl0IGFwaS50b2dnbGVWb3RlKGlkZWEuaWQpO1xuICAgICAgc2V0T3ZlcnJpZGVzKChvKSA9PiAoeyAuLi5vLCBbaWRlYS5pZF06IHIgfSkpO1xuICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgIHNldE92ZXJyaWRlcygobykgPT4gKHsgLi4ubywgW2lkZWEuaWRdOiBiZWZvcmUgfSkpOyAvLyByb2xsIGJhY2tcbiAgICAgIHRvYXN0KGBZb3VyIHZvdGUgZGlkIG5vdCBzYXZlLiAke2FzTWVzc2FnZShlKX1gKTtcbiAgICB9XG4gIH07XG4gIGNvbnN0IGdvID0gKCkgPT4gbmF2aWdhdGUoJy9lbXBsb3llZS9zdWJtaXQnLCB7IGRyYWZ0VGl0bGU6IHF1aWNrIH0pO1xuXG4gIHJldHVybiAoXG4gICAgPD5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3AtcGFnZWhlYWRcIj5cbiAgICAgICAgPGRpdj48aDE+SWRlYXMgZnJvbSBhY3Jvc3MgR1dDPC9oMT48cD5CYWNrIHRoZSBpZGVhcyB5b3Ugd2FudCB0byBzZWUgYnVpbHQuIEV2ZXJ5IGlkZWEgZ2V0cyBhIHJlcGx5IHdpdGhpbiB7UkVQTFlfU0xBX0RBWVN9IGRheXMuPC9wPjwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLXN0YXJ0YmFyXCI+XG4gICAgICAgIDxsYWJlbCBodG1sRm9yPVwic3AtcXVpY2tcIj5IYXZlIGFuIGlkZWE/PC9sYWJlbD5cbiAgICAgICAgPGlucHV0IGlkPVwic3AtcXVpY2tcIiB0eXBlPVwidGV4dFwiIG1heExlbmd0aD17TElNSVRTLnRpdGxlfSB2YWx1ZT17cXVpY2t9IG9uQ2hhbmdlPXsoZSkgPT4gc2V0UXVpY2soZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgIG9uS2V5RG93bj17KGUpID0+IGUua2V5ID09PSAnRW50ZXInICYmIGdvKCl9IHBsYWNlaG9sZGVyPVwiU3RhcnQgd2l0aCBhIHRpdGxlLCBmb3IgZXhhbXBsZSDigJxBdXRvLWRyYWZ0IHByb3Bvc2FscyBmcm9tIHdvcmtzaG9wIG5vdGVz4oCdXCIgLz5cbiAgICAgICAgPGJ1dHRvbiBjbGFzc05hbWU9XCJzcC1idG5cIiBvbkNsaWNrPXtnb30+QWRkIGRldGFpbHM8L2J1dHRvbj5cbiAgICAgIDwvZGl2PlxuICAgICAgPEZpbHRlckJhciB2YWx1ZT17ZmlsdGVyc30gb25DaGFuZ2U9e3NldEZpbHRlcnN9IC8+XG4gICAgICA8QXN5bmNWaWV3IHN0YXRlPXtzdGF0ZX0gaXNFbXB0eT17KGQpID0+IGQubGVuZ3RoID09PSAwfSBlbXB0eT1cIk5vIGlkZWFzIG1hdGNoIHRoZXNlIGZpbHRlcnMuIENsZWFyIGEgZmlsdGVyIG9yIHN1Ym1pdCB0aGUgZmlyc3Qgb25lLlwiPlxuICAgICAgICB7KGxpc3QpID0+IChcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwLWZlZWRcIj5cbiAgICAgICAgICAgIHtsaXN0Lm1hcCgoaSkgPT4gKFxuICAgICAgICAgICAgICA8SWRlYUNhcmQga2V5PXtpLmlkfSBpZGVhPXt7IC4uLmksIC4uLm92ZXJyaWRlc1tpLmlkXSB9fSBvbk9wZW49e29wZW5JZGVhfSBvblZvdGU9e2NhblZvdGUodXNlcikgPyB2b3RlIDogdW5kZWZpbmVkfSAvPlxuICAgICAgICAgICAgKSl9XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgICl9XG4gICAgICA8L0FzeW5jVmlldz5cbiAgICA8Lz5cbiAgKTtcbn1cbiJdLCJmaWxlIjoiRDovRG93bmxvYWRzL1NwYXJrX3Byb3RvdHlwZV9wcm9qZWN0L3NwYXJrLXByb3RvdHlwZS9zcmMvaWRlYWNlbnRlci9wYWdlcy9JZGVhc1BhZ2UuanN4In0=
